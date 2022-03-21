@@ -123,10 +123,7 @@ public class UserController {
         if(!postUserReq.getPassword().equals(postUserReq.getPassword2())){
             return new BaseResponse<>(POST_USERS_ANOTHER_PASSWORD);
         }
-        System.out.println(postUserReq.getReceivingConsent());
-//        if(postUserReq.getReceivingConsent()==0){
-//            postUserReq.setReceivingConsent(0);
-//        }
+
         try{
             PostUserRes postUserRes = userService.createUser(postUserReq);
             return new BaseResponse<>(postUserRes);
