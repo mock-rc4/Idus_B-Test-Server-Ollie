@@ -20,27 +20,27 @@ public class UserDao {
     }
 
     public List<GetUserRes> getUsers(){
-        String getUsersQuery = "select * from UserInfo";
+        String getUsersQuery = "select * from user";
         return this.jdbcTemplate.query(getUsersQuery,
                 (rs,rowNum) -> new GetUserRes(
-                        rs.getInt("userIdx"),
-                        rs.getString("userName"),
-                        rs.getString("ID"),
-                        rs.getString("Email"),
-                        rs.getString("password"))
+                        rs.getInt("id"),
+                        rs.getString("email"),
+                        rs.getString("name"),
+                        rs.getString("password"),
+                        rs.getString("phone"))
                 );
     }
 
     public List<GetUserRes> getUsersByEmail(String email){
-        String getUsersByEmailQuery = "select * from UserInfo where email =?";
+        String getUsersByEmailQuery = "select * from user where email =?";
         String getUsersByEmailParams = email;
         return this.jdbcTemplate.query(getUsersByEmailQuery,
                 (rs, rowNum) -> new GetUserRes(
-                        rs.getInt("userIdx"),
-                        rs.getString("userName"),
-                        rs.getString("ID"),
-                        rs.getString("Email"),
-                        rs.getString("password")),
+                        rs.getInt("id"),
+                        rs.getString("email"),
+                        rs.getString("name"),
+                        rs.getString("password"),
+                        rs.getString("phone")),
                 getUsersByEmailParams);
     }
 

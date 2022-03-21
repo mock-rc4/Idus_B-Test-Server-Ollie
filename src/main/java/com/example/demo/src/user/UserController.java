@@ -49,7 +49,7 @@ public class UserController {
     @GetMapping("") // (GET) 127.0.0.1:9000/app/users
     public BaseResponse<List<GetUserRes>> getUsers(@RequestParam(required = false) String Email) {
         try{
-            if(Email == null){
+            if(Email == null){ //params에 Email도 들어오면 안됨
                 List<GetUserRes> getUsersRes = userProvider.getUsers();
                 return new BaseResponse<>(getUsersRes);
             }
