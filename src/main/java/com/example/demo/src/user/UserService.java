@@ -57,12 +57,16 @@ public class UserService {
         }
     }
 
-    public void modifyUserName(PatchUserReq patchUserReq) throws BaseException {
+    public GetUserRes modifyUserProfile(GetUserRes getUserRes) throws BaseException {
         try{
-            int result = userDao.modifyUserName(patchUserReq);
+            GetUserRes userprofile=userDao.getUserProfile(getUserRes.getId()); //아이디 값 가진 user profile정보 불러옴
+            getUserRes.setNullProfile(userprofile);
+            int result = userDao.modifyUserProfile(getUserRes);
             if(result == 0){
                 throw new BaseException(MODIFY_FAIL_USERNAME);
             }
+            GetUserRes patchProfile= userDao.getUserProfile(getUserRes.getId());
+            return patchProfile;
         } catch(Exception exception){
             throw new BaseException(DATABASE_ERROR);
         }

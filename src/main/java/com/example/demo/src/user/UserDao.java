@@ -26,8 +26,13 @@ public class UserDao {
                         rs.getInt("id"),
                         rs.getString("email"),
                         rs.getString("name"),
-                        rs.getString("password"),
-                        rs.getString("phone"))
+                        rs.getDate("birthday"),
+                        rs.getInt("gender"),
+                        rs.getString("phone"),
+                        rs.getString("recipient"),
+                        rs.getString("recipient_phone"),
+                        rs.getString("address"),
+                        rs.getString("profile_img"))
                 );
     }
 
@@ -39,21 +44,31 @@ public class UserDao {
                         rs.getInt("id"),
                         rs.getString("email"),
                         rs.getString("name"),
-                        rs.getString("password"),
-                        rs.getString("phone")),
+                        rs.getDate("birthday"),
+                        rs.getInt("gender"),
+                        rs.getString("phone"),
+                        rs.getString("recipient"),
+                        rs.getString("recipient_phone"),
+                        rs.getString("address"),
+                        rs.getString("profile_img")),
                 getUsersByEmailParams);
     }
 
-    public GetUserRes getUser(int userIdx){
-        String getUserQuery = "select * from UserInfo where userIdx = ?";
+    public GetUserRes getUserProfile(int userIdx){
+        String getUserQuery = "select * from user where id = ?";
         int getUserParams = userIdx;
         return this.jdbcTemplate.queryForObject(getUserQuery,
                 (rs, rowNum) -> new GetUserRes(
-                        rs.getInt("userIdx"),
-                        rs.getString("userName"),
-                        rs.getString("ID"),
-                        rs.getString("Email"),
-                        rs.getString("password")),
+                        rs.getInt("id"),
+                        rs.getString("email"),
+                        rs.getString("name"),
+                        rs.getDate("birthday"),
+                        rs.getInt("gender"),
+                        rs.getString("phone"),
+                        rs.getString("recipient"),
+                        rs.getString("recipient_phone"),
+                        rs.getString("address"),
+                        rs.getString("profile_img")),
                 getUserParams);
     }
     
@@ -64,6 +79,7 @@ public class UserDao {
         Object[] createUserParams = new Object[]{postUserReq.getEmail(), postUserReq.getName(), postUserReq.getPassword(),postUserReq.getPhone(),
         postUserReq.getRecommendedCode(),postUserReq.getReceivingConsent()};
         this.jdbcTemplate.update(createUserQuery, createUserParams);
+
         String lastInserIdQuery = "select last_insert_id()";
         String getNameQuery="select id, name from user where id=?";
         int getNameParams=this.jdbcTemplate.queryForObject(lastInserIdQuery,int.class);
@@ -86,11 +102,15 @@ public class UserDao {
 
     }
 
-    public int modifyUserName(PatchUserReq patchUserReq){
-        String modifyUserNameQuery = "update UserInfo set userName = ? where userIdx = ? ";
-        Object[] modifyUserNameParams = new Object[]{patchUserReq.getUserName(), patchUserReq.getUserIdx()};
+    public int modifyUserProfile(GetUserRes getUserRes){
+        String modifyUserNameQuery = "update user set email=?, name=?, birthday=?, gender=?, phone=?, recipient=?, recipient_phone=?, address=?, profile_img=? where id = ? ";
+        Object[] modifyUserNameParams = new Object[]{getUserRes.getEmail(),getUserRes.getName(),getUserRes.getBirthday(),
+        getUserRes.getGender(),getUserRes.getPhone(),getUserRes.getRecipient(),getUserRes.getRecipientPhone(),getUserRes.getAddress(),
+        getUserRes.getProfileImg(),getUserRes.getId()};
 
         return this.jdbcTemplate.update(modifyUserNameQuery,modifyUserNameParams);
+
+
     }
 
     public User getUser(PostLoginReq postLoginReq){
@@ -115,7 +135,8 @@ public class UserDao {
                         rs.getInt("gender"),
                         rs.getString("recipient"),
                         rs.getString("recipient_phone"),
-                        rs.getString("address")
+                        rs.getString("address"),
+                        rs.getString("profile_img")
                 ),
                 getPwdParams
                 );

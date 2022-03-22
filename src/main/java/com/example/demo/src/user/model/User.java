@@ -28,5 +28,6 @@ public class User {
     private String recipient;
     private String recipientPhone;
     private String address;
+    private String profileImg;
 
 }

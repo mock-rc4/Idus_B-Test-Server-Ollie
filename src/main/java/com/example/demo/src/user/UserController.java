@@ -62,17 +62,17 @@ public class UserController {
     }
 
     /**
-     * 회원 1명 조회 API
-     * [GET] /users/:userIdx
+     * 회원 1명 프로필 조회 API
+     * [GET] /users/profile
      * @return BaseResponse<GetUserRes>
      */
-    // Path-variable
     @ResponseBody
-    @GetMapping("/{userIdx}") // (GET) 127.0.0.1:9000/app/users/:userIdx
-    public BaseResponse<GetUserRes> getUser(@PathVariable("userIdx") int userIdx) {
+    @GetMapping("/profile") // (GET) 127.0.0.1:9000/app/users
+    public BaseResponse<GetUserRes> getUserProfile() {
         // Get Users
         try{
-            GetUserRes getUserRes = userProvider.getUser(userIdx);
+            int userIdxByJwt = jwtService.getUserIdx();
+            GetUserRes getUserRes = userProvider.getUserProfile(userIdxByJwt);
             return new BaseResponse<>(getUserRes);
         } catch(BaseException exception){
             return new BaseResponse<>((exception.getStatus()));
@@ -167,21 +167,16 @@ public class UserController {
      * @return BaseResponse<String>
      */
     @ResponseBody
-    @PatchMapping("/{userIdx}")
-    public BaseResponse<String> modifyUserName(@PathVariable("userIdx") int userIdx, @RequestBody User user){
+    @PatchMapping("")
+    public BaseResponse<GetUserRes> modifyUserProfile(@RequestBody GetUserRes getUserRes){
         try {
             //jwt에서 idx 추출.
             int userIdxByJwt = jwtService.getUserIdx();
-            //userIdx와 접근한 유저가 같은지 확인
-            if(userIdx != userIdxByJwt){
-                return new BaseResponse<>(INVALID_USER_JWT);
-            }
-            //같다면 유저네임 변경
-            PatchUserReq patchUserReq = new PatchUserReq(userIdx,user.getName());
-            userService.modifyUserName(patchUserReq);
 
-            String result = "";
-        return new BaseResponse<>(result);
+            getUserRes.setId(userIdxByJwt); ;
+            GetUserRes patchProfile=userService.modifyUserProfile(getUserRes);
+
+        return new BaseResponse<>(patchProfile);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
         }
