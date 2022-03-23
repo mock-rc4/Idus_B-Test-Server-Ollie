@@ -38,3 +38,7 @@
   - 특정 유저 프로필 수정 API수현
   - 작품 New탭 게시글 전체 조회 API구현 - 근데 쿼리 부정확할 수도 있음..
   - 서버에 반영
+
+erd
+URL : https://aquerytool.com/aquerymain/index/?rurl=d895bb08-2c37-48c1-9ff3-8aaadc0872fa&
+Password : 3xs6i1
