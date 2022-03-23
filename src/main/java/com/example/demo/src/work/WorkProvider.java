@@ -1,11 +1,7 @@
 package com.example.demo.src.work;
 
 import com.example.demo.config.BaseException;
-import com.example.demo.config.secret.Secret;
-import com.example.demo.src.user.UserDao;
-import com.example.demo.src.user.model.*;
-import com.example.demo.src.work.model.GetWorkNewRes;
-import com.example.demo.utils.AES128;
+import com.example.demo.src.work.model.*;
 import com.example.demo.utils.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,4 +37,29 @@ public class WorkProvider {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+    public GetWorkDetail getWork(int workId, int userId) throws BaseException {
+        try {
+
+            GetWorkDetailRes getWorkDetailRes = workDao.getWork(workId,userId);
+            List<String> keywords=workDao.getWorkKeyword(workId);
+            List<String> imgs=workDao.getWorkImg(workId);
+
+            List<GetWorkReviewRes> workReviews = workDao.getWorkReview(workId);
+            List<GetWorkComment> workComments = workDao.getWorkComment(workId);
+
+            GetWorkDetail getWorkDetail=new GetWorkDetail();
+
+            getWorkDetail.setWorkDetail(getWorkDetailRes);
+            getWorkDetail.setKeyword(keywords);
+            getWorkDetail.setImgs(imgs);
+            getWorkDetail.setWorkReview(workReviews);
+            getWorkDetail.setWorkComment(workComments);
+            return getWorkDetail;
+
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+
 }

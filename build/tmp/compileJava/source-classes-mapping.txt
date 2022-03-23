@@ -2,6 +2,8 @@ com/example/demo/src/user/model/PostUserReq.java
  com.example.demo.src.user.model.PostUserReq
 com/example/demo/config/Constant.java
  com.example.demo.config.Constant
+com/example/demo/src/work/model/GetWorkComment.java
+ com.example.demo.src.work.model.GetWorkComment
 com/example/demo/utils/ValidationRegex.java
  com.example.demo.utils.ValidationRegex
 com/example/demo/src/user/model/PostLoginRes.java
@@ -26,6 +28,8 @@ com/example/demo/src/work/WorkDao.java
  com.example.demo.src.work.WorkDao
 com/example/demo/src/work/WorkController.java
  com.example.demo.src.work.WorkController
+com/example/demo/src/work/model/GetWorkDetailRes.java
+ com.example.demo.src.work.model.GetWorkDetailRes
 com/example/demo/config/secret/Secret.java
  com.example.demo.config.secret.Secret
 com/example/demo/src/user/model/PostUserRes.java
@@ -38,6 +42,8 @@ com/example/demo/src/work/WorkService.java
  com.example.demo.src.work.WorkService
 com/example/demo/config/BaseResponse.java
  com.example.demo.config.BaseResponse
+com/example/demo/src/work/model/GetWorkReviewRes.java
+ com.example.demo.src.work.model.GetWorkReviewRes
 com/example/demo/src/user/model/User.java
  com.example.demo.src.user.model.User
 com/example/demo/src/user/UserService.java
@@ -52,3 +58,7 @@ com/example/demo/utils/JwtService.java
  com.example.demo.utils.JwtService
 com/example/demo/src/user/UserProvider.java
  com.example.demo.src.user.UserProvider
+com/example/demo/src/work/model/GetWorkDetail.java
+ com.example.demo.src.work.model.GetWorkDetail
+com/example/demo/src/work/model/GetWorkKeyword.java
+ com.example.demo.src.work.model.GetWorkKeyword
