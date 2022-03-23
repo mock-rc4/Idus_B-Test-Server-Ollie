@@ -17,14 +17,13 @@
   
 ### 2022 - 03 -20 진행상황
   - erd설계 70%
-  - git 저장소 연결 - 실패
+  - git 저장소 연결 - 실패: repo not fount에러
 
 ### 2022 -03 -21 진행상황
   - 회원가입/로그인, 회원조회 api구현
   
   - 회원가입/로그인 명세서 작성
-  - git 저장소 연결 : git 관련 자격증명 다 삭제하고, 아이디/비번치는거 에러 났지만 그냥 무시하고 git pull하고 git push origin main하니까 됨..
-                      정확히 어떻게 해결한건지는 잘 모르겠음
+  - git 저장소 연결 : git 관련 자격증명 다 삭제하고 다시 git pull하니까 해결됨. 
                       
   - 서버에 git clone, git pull로 반영: 이 과정에서 아이디, 비번 입력하는데 access token필요해서 발급받음. access token 일회용인데 저장안해뒀다가 다시 발급받음.
   
@@ -36,9 +35,17 @@
  ### 2022 -03 -22 진행상황
   - 특정 유저 프로필 조회 API구현
   - 특정 유저 프로필 수정 API수현
-  - 작품 New탭 게시글 전체 조회 API구현 - 근데 쿼리 부정확할 수도 있음..
+  - 작품 New탭 게시글 전체 조회 API구현 
   - 서버에 반영
 
 erd
 URL : https://aquerytool.com/aquerymain/index/?rurl=d895bb08-2c37-48c1-9ff3-8aaadc0872fa&
 Password : 3xs6i1
+
+api명세서:https://docs.google.com/spreadsheets/d/1tHDdcIBoIRphjRwL4aNMx_cqag7Ekw1C_p_jPg0u_ZQ/edit?usp=sharing
+
+### 2022 -03 -23 진행상황
+  - 작품 게시글 상세 페이지 API구현
+    - 작품정보, 작품후기, 작품댓글, 작품키워드등 많은 정보가 한 페이지에 들어있어 한방쿼리에 어려움을 겪음
+    - 그래서 여러 객체를 따로 가져와서 하나로 합침
+  - 앞으로 구현할 api 설계
