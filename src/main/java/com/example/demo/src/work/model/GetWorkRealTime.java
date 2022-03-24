@@ -14,4 +14,6 @@ public class GetWorkRealTime {
     private String workImg;
     private int interestStatus;
     private String workReview;
+    private int starCnt;
+    private float star;
 }

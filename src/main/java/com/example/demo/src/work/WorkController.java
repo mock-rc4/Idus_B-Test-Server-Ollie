@@ -83,9 +83,7 @@ public class WorkController {
     @GetMapping("/search")
     public BaseResponse<List<GetWorkSearch>> getWorksSearch(@RequestParam(required = false) String word) {
         try{
-            if(word == null){ //params에 Email도 들어오면 안됨
-              word="캠핑";
-            }
+
             int userId = jwtService.getUserIdx();
             List<GetWorkSearch>  getWorkSearch = workProvider.getWorksSearch(word,userId);
             return new BaseResponse<>(getWorkSearch);
@@ -99,11 +97,11 @@ public class WorkController {
      * [Get] /works */
     @ResponseBody
     @GetMapping("/today")
-    public BaseResponse<List<GetWorkSearch>> getWorksToday() {
+    public BaseResponse<List<GetWorkRealTime>> getWorksToday() {
         try{
             int userId = jwtService.getUserIdx();
-            List<GetWorkSearch>  getWorkSearch = workProvider.getWorksToday(userId);
-            return new BaseResponse<>(getWorkSearch);
+            List<GetWorkRealTime> getWorkRealTime = workProvider.getWorksToday(userId);
+            return new BaseResponse<>(getWorkRealTime);
         } catch(BaseException exception){
             return new BaseResponse<>((exception.getStatus()));
         }

@@ -81,10 +81,10 @@ public class WorkProvider {
         }
     }
 
-    public List<GetWorkSearch> getWorksToday(int userId) throws BaseException{
+    public List<GetWorkRealTime> getWorksToday(int userId) throws BaseException{
         try{
-            List<GetWorkSearch> getWorkSearch = workDao.getWorksToday(userId);
-            return getWorkSearch;
+            List<GetWorkRealTime> getWorkRealTime = workDao.getWorksToday(userId);
+            return getWorkRealTime;
         }
         catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);

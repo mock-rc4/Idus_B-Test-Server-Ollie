@@ -65,7 +65,9 @@ public class WorkDao {
                 "           when wi.user_id is null then 0\n" +
                 "       end ) as interestStatus,\n" +
                 "       wp.created_at,\n" +
-                "       wr.content as workReview\n" +
+                "       wr.content as workReview,\n" +
+                "       count(star) as starCnt,\n" +
+                "       AVG(star) as star\n" +
                 "from work w\n" +
                 "left join work_interest wi\n" +
                 "on w.id = wi.work_id\n" +
@@ -88,7 +90,9 @@ public class WorkDao {
                         rs.getString("title"),
                         rs.getString("img"),
                         rs.getInt("interestStatus"),
-                        rs.getString("workReview")
+                        rs.getString("workReview"),
+                        rs.getInt("starCnt"),
+                        rs.getFloat("star")
                 ),
                 getWorksNewParams, getWorksNewParams
         );
@@ -104,6 +108,7 @@ public class WorkDao {
                 "       end ) as interestStatus,\n" +
                 "       w.created_at,\n" +
                 "       wr.content as workReview,\n" +
+                        "price,\n" +
                 "       count(star) as starCnt,\n" +
                 "       AVG(star) as star\n" +
                 "from work w\n" +
@@ -129,6 +134,7 @@ public class WorkDao {
                         rs.getString("img"),
                         rs.getInt("interestStatus"),
                         rs.getString("workReview"),
+                        rs.getInt("price"),
                         rs.getInt("starCnt"),
                         rs.getFloat("star")
                 ),
@@ -136,7 +142,7 @@ public class WorkDao {
         );
     }
 
-    public List<GetWorkSearch> getWorksToday(int userId) {
+    public List<GetWorkRealTime> getWorksToday(int userId) {
         String getWorksNewQuery =
                 "select author_id,title,img,\n" +
                 "       max( case\n" +
@@ -163,7 +169,7 @@ public class WorkDao {
                 "group by w.id";
         int getWorksNewParams = userId;
         return this.jdbcTemplate.query(getWorksNewQuery,
-                (rs, rowNum) -> new GetWorkSearch(
+                (rs, rowNum) -> new GetWorkRealTime(
                         rs.getInt("author_id"),
                         rs.getString("title"),
                         rs.getString("img"),

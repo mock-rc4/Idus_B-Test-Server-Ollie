@@ -14,6 +14,7 @@ public class GetWorkSearch {
     private String workImg;
     private int interestStatus;
     private String workReview;
+    private int price;
     private int starCnt;
     private float star;
 }
