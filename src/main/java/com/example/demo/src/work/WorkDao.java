@@ -2,6 +2,7 @@ package com.example.demo.src.work;
 
 import com.example.demo.src.user.model.*;
 import com.example.demo.src.work.model.*;
+import org.hibernate.jdbc.Work;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -279,5 +280,92 @@ public class WorkDao {
                         rs.getString("img")
                 ),
                 getWorkParams);
+    }
+
+    /*작품 관심 누르기*/
+    public UserInterest createWorkInterest(UserInterest userInterest,int userId){
+
+        String createWorkInterestQuery = "insert into work_interest(work_id,user_id) VALUES (?,?)";
+        Object[] createWorkInterestParams = new Object[]{userInterest.getWorkId(),userId};
+        this.jdbcTemplate.update(createWorkInterestQuery, createWorkInterestParams);
+
+        String lastInserIdQuery = "select last_insert_id()";
+        int getInterestparams=this.jdbcTemplate.queryForObject(lastInserIdQuery,int.class);
+        String getInterestQuery="select * from work_interest where id=?";
+        return this.jdbcTemplate.queryForObject(getInterestQuery,
+                (rs, rowNum) -> new UserInterest(
+                        rs.getInt("work_id"),
+                        rs.getInt("user_id"),
+                        rs.getInt("status")
+                ),
+                getInterestparams);
+    }
+
+    /*작품 관심 해제*/
+    public UserInterest clearWorkInterest(UserInterest userInterest,int userId){
+
+        String createWorkInterestQuery = "delete from work_interest where work_id=? && user_id=?";
+        Object[] createWorkInterestParams = new Object[]{userInterest.getWorkId(),userId};
+        this.jdbcTemplate.update(createWorkInterestQuery, createWorkInterestParams);
+
+        return new UserInterest(userInterest.getWorkId(),userId,0);
+    }
+    /*작품 댓글 달기*/
+    public GetWorkComment createWorkComment(WorkCommentReview workCommentReview, int userId){
+
+        String createWorkInterestQuery = "insert into work_comment(work_id,user_id,content) VALUES (?,?,?)";
+        Object[] createWorkInterestParams = new Object[]{workCommentReview.getWorkId(),userId,workCommentReview.getContent()};
+        this.jdbcTemplate.update(createWorkInterestQuery, createWorkInterestParams);
+
+        String lastInserIdQuery = "select last_insert_id()";
+        int getInterestparams=this.jdbcTemplate.queryForObject(lastInserIdQuery,int.class);
+        String getInterestQuery="" +
+                "select name,content\n" +
+                "from work_comment\n" +
+                "join idusB.user\n" +
+                "on work_comment.user_id = user.id\n" +
+                "where work_comment.id=?";
+        return this.jdbcTemplate.queryForObject(getInterestQuery,
+                (rs, rowNum) -> new GetWorkComment(
+                        rs.getString("name"),
+                        rs.getString("content")
+                ),
+                getInterestparams);
+    }
+
+    /*작품 후기 쓰기*/
+    public GetWorkReviewRes createWorkReview(WorkCommentReview workCommentReview, int userId){
+
+        String createWorkReviewQuery = "insert into work_review(work_id,user_id,content,star) VALUES (?,?,?,?)";
+        Object[] createWorkReviewParams = new Object[]{workCommentReview.getWorkId(),userId,workCommentReview.getContent(),workCommentReview.getStar()};
+        this.jdbcTemplate.update(createWorkReviewQuery, createWorkReviewParams);
+
+        String lastInserIdQuery = "select last_insert_id()";
+        int getWorkReviewparams=this.jdbcTemplate.queryForObject(lastInserIdQuery,int.class);
+
+        for(int i=0;i<workCommentReview.getReviewImg().size();i++){
+            Object[] createWorkReviewImgParams = new Object[]{getWorkReviewparams,workCommentReview.getReviewImg().get(i)};
+            this.jdbcTemplate.update("insert into work_review_image(work_review_id, img) VALUES (?,?)",createWorkReviewImgParams);
+        }
+
+        String getInterestQuery="" +
+                "select name, star, wr.created_at, content,img\n" +
+                "from work_review wr\n" +
+                "join idusB.user u\n" +
+                "on wr.user_id = u.id\n" +
+                "join work_review_image wri\n" +
+                "on wr.id = wri.work_review_id\n" +
+                "where wr.id= ?\n" +
+                "group by wr.id";
+        SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy년 MM월 dd일");
+        return this.jdbcTemplate.queryForObject(getInterestQuery,
+                (rs, rowNum) -> new GetWorkReviewRes(
+                        rs.getString("name"),
+                        rs.getFloat("star"),
+                        dateFormat.format(rs.getTimestamp("wr.created_at")),
+                        rs.getString("content"),
+                        rs.getString("img")
+                ),
+                getWorkReviewparams);
     }
 }

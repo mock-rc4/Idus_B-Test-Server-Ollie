@@ -80,6 +80,21 @@ public class UserController {
 
     }
 
+//    /**
+//     * 작품에 관심해제 API
+//     * [POST} */
+//    @ResponseBody
+//    @PostMapping("/interest-clear")
+//    public BaseResponse<UserInterest> clearWorkInterest(@RequestBody UserInterest userInterest) {
+//
+//        try{
+//            int userId = jwtService.getUserIdx();
+//            UserInterest interest = userService.clearWorkInterest(userInterest,userId);
+//            return new BaseResponse<>(interest);
+//        } catch(BaseException exception){
+//            return new BaseResponse<>((exception.getStatus()));
+//        }
+//    }
     /**
      * 회원가입 API
      * [POST] /users

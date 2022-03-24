@@ -1,5 +1,6 @@
 package com.example.demo.src.work;
 import com.example.demo.src.user.model.GetUserRes;
+import com.example.demo.src.user.model.UserInterest;
 import com.example.demo.src.work.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -106,4 +107,51 @@ public class WorkController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+
+    /**
+     * 작품에 관심누르기 API
+     * [POST} */
+    @ResponseBody
+    @PostMapping("/interest")
+    public BaseResponse<UserInterest> createWorkInterest(@RequestBody UserInterest userInterest) {
+
+        try{
+            int userId = jwtService.getUserIdx();
+            UserInterest interest = workService.createWorkInterest(userInterest,userId);
+            return new BaseResponse<>(interest);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+    /**
+     * 작품에 댓글달기 API
+     * [POST} */
+    @ResponseBody
+    @PostMapping("/comment")
+    public BaseResponse<GetWorkComment> createWorkComment(@RequestBody WorkCommentReview workCommentReview) {
+
+        try{
+            int userId = jwtService.getUserIdx();
+            GetWorkComment getWorkComment = workService.createWorkComment(workCommentReview,userId);
+            return new BaseResponse<>(getWorkComment);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+    /**
+     * 작품에 후기 쓰기 API
+     * [POST} */
+    @ResponseBody
+    @PostMapping("/review")
+    public BaseResponse<GetWorkReviewRes> createWorkReview(@RequestBody WorkCommentReview workCommentReview) {
+
+        try{
+            int userId = jwtService.getUserIdx();
+            GetWorkReviewRes getWorkReviewRes = workService.createWorkReview(workCommentReview,userId);
+            return new BaseResponse<>(getWorkReviewRes);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
 }
