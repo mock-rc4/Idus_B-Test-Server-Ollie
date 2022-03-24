@@ -61,5 +61,33 @@ public class WorkProvider {
         }
     }
 
+    public List<GetWorkRealTime> getWorksRealTime(int userId) throws BaseException{
+        try{
+            List<GetWorkRealTime> getWorkRealTime = workDao.getWorksRealTime(userId);
+            return getWorkRealTime;
+        }
+        catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 
+    public List<GetWorkSearch> getWorksSearch(String word,int userId) throws BaseException{
+        try{
+            List<GetWorkSearch> getWorkSearch = workDao.getWorksSearch(word,userId);
+            return getWorkSearch;
+        }
+        catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    public List<GetWorkSearch> getWorksToday(int userId) throws BaseException{
+        try{
+            List<GetWorkSearch> getWorkSearch = workDao.getWorksToday(userId);
+            return getWorkSearch;
+        }
+        catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }

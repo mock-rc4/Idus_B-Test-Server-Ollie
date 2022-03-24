@@ -54,6 +54,128 @@ public class WorkDao {
         );
     }
 
+    public List<GetWorkRealTime> getWorksRealTime(int userId) {
+        String getWorksNewQuery =
+                "select *\n" +
+                "from (\n" +
+                "select author_id, title,img,\n" +
+                "       max( case\n" +
+                "           when wi.user_id =? then wi.status\n" +
+                "           when wi.user_id!=? then 0\n" +
+                "           when wi.user_id is null then 0\n" +
+                "       end ) as interestStatus,\n" +
+                "       wp.created_at,\n" +
+                "       wr.content as workReview\n" +
+                "from work w\n" +
+                "left join work_interest wi\n" +
+                "on w.id = wi.work_id\n" +
+                "left join (\n" +
+                "    select work_id,img\n" +
+                "    from work_image\n" +
+                "    group by work_id\n" +
+                ") image\n" +
+                "on w.id=image.work_id\n" +
+                "left join work_review wr\n" +
+                "on w.id = wr.work_id\n" +
+                "join work_purchase wp\n" +
+                "on w.id = wp.work_id\n" +
+                "group by w.id) orderWork\n" +
+                "order by orderWork.created_at desc";
+        int getWorksNewParams = userId;
+        return this.jdbcTemplate.query(getWorksNewQuery,
+                (rs, rowNum) -> new GetWorkRealTime(
+                        rs.getInt("author_id"),
+                        rs.getString("title"),
+                        rs.getString("img"),
+                        rs.getInt("interestStatus"),
+                        rs.getString("workReview")
+                ),
+                getWorksNewParams, getWorksNewParams
+        );
+    }
+
+    public List<GetWorkSearch> getWorksSearch(String word,int userId) {
+        String getWorksNewQuery =
+                "select author_id, title,img,\n" +
+                "       max( case\n" +
+                "           when wi.user_id =? then wi.status\n" +
+                "           when wi.user_id!=? then 0\n" +
+                "           when wi.user_id is null then 0\n" +
+                "       end ) as interestStatus,\n" +
+                "       w.created_at,\n" +
+                "       wr.content as workReview,\n" +
+                "       count(star) as starCnt,\n" +
+                "       AVG(star) as star\n" +
+                "from work w\n" +
+                "left join work_interest wi\n" +
+                "on w.id = wi.work_id\n" +
+                "left join (\n" +
+                "    select work_id,img\n" +
+                "    from work_image\n" +
+                "    group by work_id\n" +
+                ") image\n" +
+                "on w.id=image.work_id\n" +
+                "left join work_review wr\n" +
+                "on w.id = wr.work_id\n" +
+                "where w.title\n" +
+                "like ? \n" +
+                "group by w.id";
+        int getWorksNewParams = userId;
+        String keyword='%'+word+'%';
+        return this.jdbcTemplate.query(getWorksNewQuery,
+                (rs, rowNum) -> new GetWorkSearch(
+                        rs.getInt("author_id"),
+                        rs.getString("title"),
+                        rs.getString("img"),
+                        rs.getInt("interestStatus"),
+                        rs.getString("workReview"),
+                        rs.getInt("starCnt"),
+                        rs.getFloat("star")
+                ),
+                getWorksNewParams, getWorksNewParams,keyword
+        );
+    }
+
+    public List<GetWorkSearch> getWorksToday(int userId) {
+        String getWorksNewQuery =
+                "select author_id,title,img,\n" +
+                "       max( case\n" +
+                "           when wi.user_id =? then wi.status\n" +
+                "           when wi.user_id!=? then 0\n" +
+                "           when wi.user_id is null then 0\n" +
+                "       end ) as interestStatus,\n" +
+                "       w.created_at,\n" +
+                "       wr.content as workReview,\n" +
+                "       count(star) as starCnt,\n" +
+                "       AVG(star) as star\n" +
+                "from work w\n" +
+                "left join work_interest wi\n" +
+                "on w.id = wi.work_id\n" +
+                "left join (\n" +
+                "    select work_id,img\n" +
+                "    from work_image\n" +
+                "    group by work_id\n" +
+                ") image\n" +
+                "on w.id=image.work_id\n" +
+                "left join work_review wr\n" +
+                "on w.id = wr.work_id\n" +
+                "where DATE(w.created_at) = DATE(NOW())\n" +
+                "group by w.id";
+        int getWorksNewParams = userId;
+        return this.jdbcTemplate.query(getWorksNewQuery,
+                (rs, rowNum) -> new GetWorkSearch(
+                        rs.getInt("author_id"),
+                        rs.getString("title"),
+                        rs.getString("img"),
+                        rs.getInt("interestStatus"),
+                        rs.getString("workReview"),
+                        rs.getInt("starCnt"),
+                        rs.getFloat("star")
+                ),
+                getWorksNewParams, getWorksNewParams
+        );
+    }
+
     public GetWorkDetailRes getWork(int workId, int userId) {
         String getWorkQuery =
                 "select author_id, category, title, price, delivery_price, delivery_start,quantity,content, ifnull(wi.status,0) as interestStatus, starCnt, star\n" +
