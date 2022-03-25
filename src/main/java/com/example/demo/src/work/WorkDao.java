@@ -79,7 +79,7 @@ public class WorkDao {
                 ") image\n" +
                 "on w.id=image.work_id\n" +
                 "left join work_review wr\n" +
-                "on w.id = wr.work_id\n" +
+                "on w.id = wr.work_id && wr.status=1\n" +
                 "join work_purchase wp\n" +
                 "on w.id = wp.work_id\n" +
                 "group by w.id) orderWork\n" +
@@ -122,7 +122,7 @@ public class WorkDao {
                 ") image\n" +
                 "on w.id=image.work_id\n" +
                 "left join work_review wr\n" +
-                "on w.id = wr.work_id\n" +
+                "on w.id = wr.work_id && wr.status=1\n" +
                 "where w.title\n" +
                 "like ? \n" +
                 "group by w.id";
@@ -165,7 +165,7 @@ public class WorkDao {
                 ") image\n" +
                 "on w.id=image.work_id\n" +
                 "left join work_review wr\n" +
-                "on w.id = wr.work_id\n" +
+                "on w.id = wr.work_id && wr.status=1\n" +
                 "where DATE(w.created_at) = DATE(NOW())\n" +
                 "group by w.id";
         int getWorksNewParams = userId;
@@ -192,6 +192,7 @@ public class WorkDao {
                         "left join(\n" +
                         "    select work_id,count(star) as starCnt,AVG(star) as star\n" +
                         "    from work_review\n" +
+                        "    where work_review.status=1" +
                         "    group by work_id\n" +
                         ") work_star\n" +
                         "on w.id=work_star.work_id\n" +
@@ -223,10 +224,10 @@ public class WorkDao {
                 "from work_review wr\n" +
                 "join idusB.user u\n" +
                 "on wr.user_id = u.id\n" +
-                "join work_review_image wri\n" +
+                "left join work_review_image wri\n" +
                 "on wr.id = wri.work_review_id\n" +
-                "where work_id= ?\n" +
-                "group by wri.work_review_id";
+                "where work_id=? && wr.status=1\n" +
+                "group by wr.id";
         int getWorkParams = workId;
 //        int getWorkParams2 = userId;
         SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy년 MM월 dd일");
@@ -247,7 +248,7 @@ public class WorkDao {
                 "from work_comment\n" +
                 "join idusB.user u\n" +
                 "on work_comment.user_id = u.id\n" +
-                "where work_comment.work_id=?";
+                "where work_comment.work_id=? && work_comment.status=1";
         int getWorkParams = workId;
         return this.jdbcTemplate.query(getWorkQuery,
                 (rs, rowNum) -> new GetWorkComment(
@@ -332,7 +333,13 @@ public class WorkDao {
                 ),
                 getInterestparams);
     }
+    /*작품 댓글 삭제*/
+    public int clearWorkComment(int workCommentId,int userId){
 
+        String createWorkInterestQuery = "update work_comment set status=? where id=? && user_id=?";
+        Object[] createWorkInterestParams = new Object[]{0,workCommentId,userId};
+        return this.jdbcTemplate.update(createWorkInterestQuery, createWorkInterestParams);
+    }
     /*작품 후기 쓰기*/
     public GetWorkReviewRes createWorkReview(WorkCommentReview workCommentReview, int userId){
 
@@ -367,5 +374,12 @@ public class WorkDao {
                         rs.getString("img")
                 ),
                 getWorkReviewparams);
+    }
+    /*작품 댓글 삭제*/
+    public int clearWorkReview(int workReviewId,int userId){
+
+        String createWorkInterestQuery = "update work_review set status=? where id=? && user_id=?";
+        Object[] createWorkInterestParams = new Object[]{0,workReviewId,userId};
+        return this.jdbcTemplate.update(createWorkInterestQuery, createWorkInterestParams);
     }
 }
