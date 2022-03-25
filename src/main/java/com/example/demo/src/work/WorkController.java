@@ -81,7 +81,7 @@ public class WorkController {
      * 작품 검색 api
      * [Get] /works */
     @ResponseBody
-    @GetMapping("/search")
+    @GetMapping("")
     public BaseResponse<List<GetWorkSearch>> getWorksSearch(@RequestParam(required = false) String word) {
         try{
 
@@ -139,6 +139,21 @@ public class WorkController {
         }
     }
     /**
+     * 작품에 단 댓글 삭제 API
+     * [Get} */
+    @ResponseBody
+    @GetMapping("/comment/{workCommentId}")
+    public BaseResponse<DeleteResult> clearWorkComment(@PathVariable("workCommentId") int workCommentId) {
+
+        try{
+            int userId = jwtService.getUserIdx();
+            DeleteResult deleteResult = workService.clearWorkComment(workCommentId,userId);
+            return new BaseResponse<>(deleteResult);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+    /**
      * 작품에 후기 쓰기 API
      * [POST} */
     @ResponseBody
@@ -153,5 +168,19 @@ public class WorkController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+    /**
+     * 작품에 단 후기 삭제 API
+     * [Get} */
+    @ResponseBody
+    @GetMapping("/review/{workReviewId}")
+    public BaseResponse<DeleteResult> clearWorkReview(@PathVariable("workReviewId") int workReviewId) {
 
+        try{
+            int userId = jwtService.getUserIdx();
+            DeleteResult deleteResult = workService.clearWorkReview(workReviewId,userId);
+            return new BaseResponse<>(deleteResult);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 }

@@ -12,5 +12,6 @@ public class WorkCommentReview {
     private int workId;
     private String content;
     private float star;
+    private int status;
     private List<String> reviewImg;
 }
