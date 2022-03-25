@@ -12,6 +12,8 @@ com/example/demo/utils/ValidationRegex.java
  com.example.demo.utils.ValidationRegex
 com/example/demo/src/user/model/PostLoginRes.java
  com.example.demo.src.user.model.PostLoginRes
+com/example/demo/src/onclass/OnclassService.java
+ com.example.demo.src.onclass.OnclassService
 com/example/demo/src/work/model/WorkCommentReview.java
  com.example.demo.src.work.model.WorkCommentReview
 com/example/demo/src/user/UserDao.java
@@ -22,6 +24,8 @@ com/example/demo/utils/AES128.java
  com.example.demo.utils.AES128
 com/example/demo/config/BaseResponseStatus.java
  com.example.demo.config.BaseResponseStatus
+com/example/demo/src/onclass/model/OnClassDetail.java
+ com.example.demo.src.onclass.model.OnClassDetail
 com/example/demo/src/user/model/PatchUserReq.java
  com.example.demo.src.user.model.PatchUserReq
 com/example/demo/src/WebSecurityConfig.java
@@ -40,6 +44,12 @@ com/example/demo/src/work/model/GetWorkDetailRes.java
  com.example.demo.src.work.model.GetWorkDetailRes
 com/example/demo/config/secret/Secret.java
  com.example.demo.config.secret.Secret
+com/example/demo/src/onclass/model/OnclassList.java
+ com.example.demo.src.onclass.model.OnclassList
+com/example/demo/src/onclass/OnclassProvider.java
+ com.example.demo.src.onclass.OnclassProvider
+com/example/demo/src/onclass/OnclassDao.java
+ com.example.demo.src.onclass.OnclassDao
 com/example/demo/src/user/model/PostUserRes.java
  com.example.demo.src.user.model.PostUserRes
 com/example/demo/src/user/UserController.java
@@ -56,6 +66,8 @@ com/example/demo/src/user/model/User.java
  com.example.demo.src.user.model.User
 com/example/demo/src/user/UserService.java
  com.example.demo.src.user.UserService
+com/example/demo/src/onclass/OnclassController.java
+ com.example.demo.src.onclass.OnclassController
 com/example/demo/src/user/model/GetUserRes.java
  com.example.demo.src.user.model.GetUserRes
 com/example/demo/config/BaseException.java
@@ -68,6 +80,8 @@ com/example/demo/utils/JwtService.java
  com.example.demo.utils.JwtService
 com/example/demo/src/user/UserProvider.java
  com.example.demo.src.user.UserProvider
+com/example/demo/src/onclass/model/OnClassDetailBase.java
+ com.example.demo.src.onclass.model.OnClassDetailBase
 com/example/demo/src/work/model/GetWorkDetail.java
  com.example.demo.src.work.model.GetWorkDetail
 com/example/demo/src/work/model/GetWorkKeyword.java

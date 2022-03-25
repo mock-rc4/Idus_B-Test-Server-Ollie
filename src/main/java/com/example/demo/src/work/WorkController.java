@@ -50,7 +50,7 @@ public class WorkController {
      * 작품 상세 페이지(기본화면) api
      * [Get] /works/detail */
     @ResponseBody
-    @GetMapping("/detail/{workId}") // (GET) 127.0.0.1:9000/app/products/:id 해도 됨...
+    @GetMapping("/{workId}") // (GET) 127.0.0.1:9000/app/products/:id 해도 됨...
     public BaseResponse<GetWorkDetail> getWork(@PathVariable("workId") int workId) {
         // Get Users
         try{
@@ -84,7 +84,9 @@ public class WorkController {
     @GetMapping("")
     public BaseResponse<List<GetWorkSearch>> getWorksSearch(@RequestParam(required = false) String word) {
         try{
-
+            if(word==null){
+                System.out.println("null입니다.");
+            }
             int userId = jwtService.getUserIdx();
             List<GetWorkSearch>  getWorkSearch = workProvider.getWorksSearch(word,userId);
             return new BaseResponse<>(getWorkSearch);

@@ -375,7 +375,7 @@ public class WorkDao {
                 ),
                 getWorkReviewparams);
     }
-    /*작품 댓글 삭제*/
+    /*작품 후기 삭제*/
     public int clearWorkReview(int workReviewId,int userId){
 
         String createWorkInterestQuery = "update work_review set status=? where id=? && user_id=?";
