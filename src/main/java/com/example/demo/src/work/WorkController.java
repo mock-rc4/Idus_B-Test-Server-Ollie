@@ -185,4 +185,20 @@ public class WorkController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+
+    /**
+     * 작품 구매하기 API
+     * [POST} */
+    @ResponseBody
+    @GetMapping("/purchase/{workId}")
+    public BaseResponse<UserInterest> createWorkPurchase(@PathVariable("workId") int workId) {
+
+        try{
+            int userId = jwtService.getUserIdx();
+            UserInterest interest = workService.createWorkPurchase(workId,userId);
+            return new BaseResponse<>(interest);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 }

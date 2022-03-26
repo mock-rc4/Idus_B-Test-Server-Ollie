@@ -15,6 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OnClassDetail {
+    private int onlineId;
     private int authorId;
     private String video;
     private String category;
@@ -32,6 +33,7 @@ public class OnClassDetail {
     private List<GetWorkReviewRes> onlineReview;
 
     public void setOnlineDetail(OnClassDetailBase onClassDetailBase) {
+        this.onlineId=onClassDetailBase.getOnlineId();
         this.authorId=onClassDetailBase.getAuthorId();
         this.video=onClassDetailBase.getVideo();
         this.category=onClassDetailBase.getCategory();

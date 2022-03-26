@@ -91,7 +91,7 @@ public class WorkService {
             GetWorkReviewRes getWorkReviewRes = workDao.createWorkReview(workCommentReview,userId);
             return getWorkReviewRes;
         } catch (Exception exception) {
-            throw new BaseException(DATABASE_ERROR);
+            throw new BaseException(USERS_INVALID_WORK_REVIEW);
         }
     }
     /**
@@ -108,6 +108,19 @@ public class WorkService {
                 deleteResult=new DeleteResult(workReviewId,"삭제 완료");
             }
             return deleteResult;
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    /**
+     * 작품 구매하기 API*/
+    public UserInterest createWorkPurchase(int workId,int userId) throws BaseException {
+        //중복
+        try{
+            UserInterest interest;
+            interest = workDao.createWorkPurchase(workId,userId);
+            return interest;
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }

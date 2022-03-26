@@ -87,18 +87,18 @@ public class OnclassService {
     }
 
     /**
-     * 작품에 후기 쓰기 API*/
+     * 온클에 후기 쓰기 API*/
     public GetWorkReviewRes createOnlineReview(WorkCommentReview workCommentReview, int userId) throws BaseException {
         //중복
         try{
             GetWorkReviewRes getWorkReviewRes = onclassDao.createOnlineReview(workCommentReview,userId);
             return getWorkReviewRes;
         } catch (Exception exception) {
-            throw new BaseException(DATABASE_ERROR);
+            throw new BaseException(USERS_INVALID_ONLINE_REVIEW);
         }
     }
     /**
-     * 작품에 단 후기 삭제 API*/
+     * 온클에 단 후기 삭제 API*/
     public DeleteResult clearOnlineReview(int onlineReviewId, int userId) throws BaseException {
         //중복
         try{
@@ -111,6 +111,19 @@ public class OnclassService {
                 deleteResult=new DeleteResult(onlineReviewId,"삭제 완료");
             }
             return deleteResult;
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    /**
+     * 온클 구매하기 API*/
+    public UserInterest createOnlinePurchase(int onlineId,int userId) throws BaseException {
+        //중복
+        try{
+            UserInterest interest;
+            interest = onclassDao.createOnlinePurchase(onlineId,userId);
+            return interest;
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }

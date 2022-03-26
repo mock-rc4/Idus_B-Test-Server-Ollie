@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.example.demo.config.BaseResponseStatus.DATABASE_ERROR;
+
 @RestController
 @RequestMapping("/app/onlines")
 public class OnclassController {
@@ -168,6 +170,22 @@ public class OnclassController {
             int userId = jwtService.getUserIdx();
             DeleteResult deleteResult = onclassService.clearOnlineReview(onlineReviewId,userId);
             return new BaseResponse<>(deleteResult);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    /**
+     * 온라인클래스 구매하기 API
+     * [POST} */
+    @ResponseBody
+    @GetMapping("/purchase/{onlineId}")
+    public BaseResponse<UserInterest> createOnlinePurchase(@PathVariable("onlineId") int onlineId) {
+
+        try{
+            int userId = jwtService.getUserIdx();
+            UserInterest interest = onclassService.createOnlinePurchase(onlineId,userId);
+            return new BaseResponse<>(interest);
         } catch(BaseException exception){
             return new BaseResponse<>((exception.getStatus()));
         }

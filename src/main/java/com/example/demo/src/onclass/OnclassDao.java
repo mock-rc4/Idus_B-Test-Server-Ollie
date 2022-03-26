@@ -1,4 +1,5 @@
 package com.example.demo.src.onclass;
+import com.example.demo.config.BaseException;
 import com.example.demo.src.onclass.model.OnClassDetailBase;
 import com.example.demo.src.onclass.model.OnclassList;
 import com.example.demo.src.user.model.*;
@@ -12,6 +13,9 @@ import javax.sql.DataSource;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+import static com.example.demo.config.BaseResponseStatus.USERS_INVALID_ONLINE_REVIEW;
+import static com.example.demo.config.BaseResponseStatus.USERS_INVALID_WORK_REVIEW;
+
 @Repository
 public class OnclassDao {
     private JdbcTemplate jdbcTemplate;
@@ -24,7 +28,7 @@ public class OnclassDao {
         String getClassesNewQuery =
                 "select *\n" +
                 "from(\n" +
-                "select author_id,\n" +
+                "select oneline_class.id,author_id,\n" +
                         "video, \n" +
                 "       category,\n" +
                 "       title,\n" +
@@ -52,6 +56,7 @@ public class OnclassDao {
         int getClassesNewParams = userId;
         return this.jdbcTemplate.query(getClassesNewQuery,
                 (rs, rowNum) -> new OnclassList(
+                        rs.getInt("id"),
                         rs.getInt("author_id"),
                         rs.getString("video"),
                         rs.getString("category"),
@@ -70,7 +75,7 @@ public class OnclassDao {
         String getClassesInterestQuery =
                 "select *\n" +
                 "from(\n" +
-                "select author_id,\n" +
+                "select oneline_class.id,author_id,\n" +
                         "video, \n" +
                 "       category,\n" +
                 "       title,\n" +
@@ -104,6 +109,7 @@ public class OnclassDao {
         int getClassesInterestParams = userId;
         return this.jdbcTemplate.query(getClassesInterestQuery,
                 (rs, rowNum) -> new OnclassList(
+                        rs.getInt("id"),
                         rs.getInt("author_id"),
                         rs.getString("video"),
                         rs.getString("category"),
@@ -122,7 +128,7 @@ public class OnclassDao {
         String getClassesReviewQuery =
                 "select *\n" +
                 "from(\n" +
-                "select author_id,\n" +
+                "select oneline_class.id,author_id,\n" +
                         "video, \n" +
                 "       category,\n" +
                 "       title,\n" +
@@ -156,6 +162,7 @@ public class OnclassDao {
         int getClassesReviewParams = userId;
         return this.jdbcTemplate.query(getClassesReviewQuery,
                 (rs, rowNum) -> new OnclassList(
+                        rs.getInt("id"),
                         rs.getInt("author_id"),
                         rs.getString("video"),
                         rs.getString("category"),
@@ -174,7 +181,7 @@ public class OnclassDao {
         String getOnlinesRandomQuery =
                 "select *\n" +
                 "from(\n" +
-                "select author_id,\n" +
+                "select oneline_class.id,author_id,\n" +
                         "video, \n" +
                 "       category,\n" +
                 "       title,\n" +
@@ -202,6 +209,7 @@ public class OnclassDao {
         int getOnlinesRandomParams = userId;
         return this.jdbcTemplate.query(getOnlinesRandomQuery,
                 (rs, rowNum) -> new OnclassList(
+                        rs.getInt("id"),
                         rs.getInt("author_id"),
                         rs.getString("video"),
                         rs.getString("category"),
@@ -218,7 +226,7 @@ public class OnclassDao {
 
     public OnClassDetailBase getOnline(int onlineId, int userId) {
         String getOnlineQuery =
-                "select author_id,\n" +
+                "select oc.id,author_id,\n" +
                         "video, \n" +
                 "       category,\n" +
                 "       title,\n" +
@@ -247,6 +255,7 @@ public class OnclassDao {
         int getOnlineParams2 = userId;
         return this.jdbcTemplate.queryForObject(getOnlineQuery,
                 (rs, rowNum) -> new OnClassDetailBase(
+                        rs.getInt("id"),
                         rs.getInt("author_id"),
                         rs.getString("video"),
                         rs.getString("category"),
@@ -306,7 +315,7 @@ public class OnclassDao {
 
     public List<OnclassList> getOnlinesSearch(String word, int userId) {
         String getClassesSearchQuery =
-                "select author_id,\n" +
+                "select oneline_class.id,author_id,\n" +
                 "       video,\n" +
                 "       category,\n" +
                 "       title,\n" +
@@ -335,6 +344,7 @@ public class OnclassDao {
         String keyword='%'+word+'%';
         return this.jdbcTemplate.query(getClassesSearchQuery,
                 (rs, rowNum) -> new OnclassList(
+                        rs.getInt("id"),
                         rs.getInt("author_id"),
                         rs.getString("video"),
                         rs.getString("category"),
@@ -418,7 +428,11 @@ public class OnclassDao {
     }
 
     /*온클 후기 쓰기*/
-    public GetWorkReviewRes createOnlineReview(WorkCommentReview workCommentReview, int userId){
+    public GetWorkReviewRes createOnlineReview(WorkCommentReview workCommentReview, int userId) throws BaseException {
+
+        if(checkOnlinePurchase(workCommentReview.getWorkId(),userId)==0){
+            throw new BaseException(USERS_INVALID_ONLINE_REVIEW);
+        }
 
         String createOnlineReviewQuery = "insert into online_class_review(onclass_id,user_id,content,star) VALUES (?,?,?,?)";
         Object[] createOnlineReviewParams = new Object[]{workCommentReview.getWorkId(),userId,workCommentReview.getContent(),workCommentReview.getStar()};
@@ -459,5 +473,31 @@ public class OnclassDao {
         String createOnlineReviewQuery = "update online_class_review set status=? where id=? && user_id=?";
         Object[] createOnlineReviewParams = new Object[]{0,onlineReviewId,userId};
         return this.jdbcTemplate.update(createOnlineReviewQuery, createOnlineReviewParams);
+    }
+
+    public int checkOnlinePurchase(int onlineId,int userId){
+        String checkInterestQuery = "select exists(select * from online_class_purchase where onclass_id=? && user_id=? && status = 1)";
+        Object[] checkInterestParams = new Object[]{onlineId,userId};
+        int result= this.jdbcTemplate.queryForObject(checkInterestQuery,
+                int.class,
+                checkInterestParams);
+        return result;
+    }
+    /*온클 구매*/
+    public UserInterest createOnlinePurchase(int onlineId, int userId){
+
+        String createOnlinePurchaseQuery = "insert into online_class_purchase(onclass_id,user_id) VALUES (?,?)";
+        Object[] createOnlinePurchaseParams = new Object[]{onlineId,userId};
+        this.jdbcTemplate.update(createOnlinePurchaseQuery, createOnlinePurchaseParams);
+        String lastInserIdQuery = "select last_insert_id()";
+        int getInterestparams=this.jdbcTemplate.queryForObject(lastInserIdQuery,int.class);
+        String getInterestQuery="select * from online_class_purchase where id=?";
+        return this.jdbcTemplate.queryForObject(getInterestQuery,
+                (rs, rowNum) -> new UserInterest(
+                        rs.getInt("onclass_id"),
+                        rs.getInt("user_id"),
+                        rs.getInt("status")
+                ),
+                getInterestparams);
     }
 }

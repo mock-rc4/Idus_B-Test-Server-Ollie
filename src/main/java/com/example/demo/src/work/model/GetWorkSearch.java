@@ -9,6 +9,7 @@ import java.sql.Date;
 @Setter
 @AllArgsConstructor
 public class GetWorkSearch {
+    private int workId;
     private int author_id;
     private String title;
     private String workImg;

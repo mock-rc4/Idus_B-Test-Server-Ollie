@@ -7,6 +7,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class GetWorkDetailRes {
+    private int workId;
     private int authorId;
     private String category;
     private String title;

@@ -1,5 +1,6 @@
 package com.example.demo.src.work;
 
+import com.example.demo.config.BaseException;
 import com.example.demo.src.user.model.*;
 import com.example.demo.src.work.model.*;
 import org.hibernate.jdbc.Work;
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.text.SimpleDateFormat;
 import java.util.List;
+
+import static com.example.demo.config.BaseResponseStatus.*;
 
 @Repository
 public class WorkDao {
@@ -24,28 +27,29 @@ public class WorkDao {
     public List<GetWorkNewRes> getWorksNew(int userIdxByJwt) {
         String getWorksNewQuery =
                 "select *\n" +
-                        "from (\n" +
-                        "select author_id, title,img,\n" +
-                        "       max( case\n" +
-                        "           when user_id =? then wi.status\n" +
-                        "           when user_id!=? then 0\n" +
-                        "           when user_id is null then 0\n" +
-                        "       end ) as interestStatus,\n" +
-                        "       w.created_at\n" +
-                        "from work w\n" +
-                        "left join work_interest wi\n" +
-                        "on w.id = wi.work_id\n" +
-                        "left join (\n" +
-                        "    select work_id,img\n" +
-                        "    from work_image\n" +
-                        "    group by work_id\n" +
-                        ") image\n" +
-                        "on w.id=image.work_id\n" +
-                        "group by w.id) orderWork\n" +
-                        "order by orderWork.created_at desc";
+                "from (\n" +
+                "select w.id,author_id, title,img,\n" +
+                "       max( case\n" +
+                "           when user_id =? then wi.status\n" +
+                "           when user_id!=? then 0\n" +
+                "           when user_id is null then 0\n" +
+                "       end ) as interestStatus,\n" +
+                "       w.created_at\n" +
+                "from work w\n" +
+                "left join work_interest wi\n" +
+                "on w.id = wi.work_id\n" +
+                "left join (\n" +
+                "    select work_id,img\n" +
+                "    from work_image\n" +
+                "    group by work_id\n" +
+                ") image\n" +
+                "on w.id=image.work_id\n" +
+                "group by w.id) orderWork\n" +
+                "order by orderWork.created_at desc";
         int getWorksNewParams = userIdxByJwt;
         return this.jdbcTemplate.query(getWorksNewQuery,
                 (rs, rowNum) -> new GetWorkNewRes(
+                        rs.getInt("id"),
                         rs.getInt("author_id"),
                         rs.getString("title"),
                         rs.getString("img"),
@@ -59,7 +63,7 @@ public class WorkDao {
         String getWorksNewQuery =
                 "select *\n" +
                 "from (\n" +
-                "select author_id, title,img,\n" +
+                "select w.id,author_id, title,img,\n" +
                 "       max( case\n" +
                 "           when wi.user_id =? then wi.status\n" +
                 "           when wi.user_id!=? then 0\n" +
@@ -87,6 +91,7 @@ public class WorkDao {
         int getWorksNewParams = userId;
         return this.jdbcTemplate.query(getWorksNewQuery,
                 (rs, rowNum) -> new GetWorkRealTime(
+                        rs.getInt("id"),
                         rs.getInt("author_id"),
                         rs.getString("title"),
                         rs.getString("img"),
@@ -101,7 +106,7 @@ public class WorkDao {
 
     public List<GetWorkSearch> getWorksSearch(String word,int userId) {
         String getWorksNewQuery =
-                "select author_id, title,img,\n" +
+                "select w.id,author_id, title,img,\n" +
                 "       max( case\n" +
                 "           when wi.user_id =? then wi.status\n" +
                 "           when wi.user_id!=? then 0\n" +
@@ -130,6 +135,7 @@ public class WorkDao {
         String keyword='%'+word+'%';
         return this.jdbcTemplate.query(getWorksNewQuery,
                 (rs, rowNum) -> new GetWorkSearch(
+                        rs.getInt("id"),
                         rs.getInt("author_id"),
                         rs.getString("title"),
                         rs.getString("img"),
@@ -145,7 +151,7 @@ public class WorkDao {
 
     public List<GetWorkRealTime> getWorksToday(int userId) {
         String getWorksNewQuery =
-                "select author_id,title,img,\n" +
+                "select w.id,author_id,title,img,\n" +
                 "       max( case\n" +
                 "           when wi.user_id =? then wi.status\n" +
                 "           when wi.user_id!=? then 0\n" +
@@ -171,6 +177,7 @@ public class WorkDao {
         int getWorksNewParams = userId;
         return this.jdbcTemplate.query(getWorksNewQuery,
                 (rs, rowNum) -> new GetWorkRealTime(
+                        rs.getInt("id"),
                         rs.getInt("author_id"),
                         rs.getString("title"),
                         rs.getString("img"),
@@ -185,7 +192,7 @@ public class WorkDao {
 
     public GetWorkDetailRes getWork(int workId, int userId) {
         String getWorkQuery =
-                "select author_id, category, title, price, delivery_price, delivery_start,quantity,content, ifnull(wi.status,0) as interestStatus, starCnt, star\n" +
+                "select w.id,author_id, category, title, price, delivery_price, delivery_start,quantity,content, ifnull(wi.status,0) as interestStatus, starCnt, star\n" +
                         "from work w\n" +
                         "left join work_interest wi\n" +
                         "on w.id = wi.work_id && wi.user_id= ?\n" +
@@ -203,6 +210,7 @@ public class WorkDao {
         int getWorkParams2 = userId;
         return this.jdbcTemplate.queryForObject(getWorkQuery,
                 (rs, rowNum) -> new GetWorkDetailRes(
+                        rs.getInt("id"),
                         rs.getInt("author_id"),
                         rs.getString("category"),
                         rs.getString("title"),
@@ -357,7 +365,11 @@ public class WorkDao {
         return this.jdbcTemplate.update(createWorkInterestQuery, createWorkInterestParams);
     }
     /*작품 후기 쓰기*/
-    public GetWorkReviewRes createWorkReview(WorkCommentReview workCommentReview, int userId){
+    public GetWorkReviewRes createWorkReview(WorkCommentReview workCommentReview, int userId) throws BaseException {
+
+        if(checkWorkPurchase(workCommentReview.getWorkId(),userId)==0){
+            throw new BaseException(USERS_INVALID_WORK_REVIEW);
+        }
 
         String createWorkReviewQuery = "insert into work_review(work_id,user_id,content,star) VALUES (?,?,?,?)";
         Object[] createWorkReviewParams = new Object[]{workCommentReview.getWorkId(),userId,workCommentReview.getContent(),workCommentReview.getStar()};
@@ -398,5 +410,32 @@ public class WorkDao {
         String createWorkInterestQuery = "update work_review set status=? where id=? && user_id=?";
         Object[] createWorkInterestParams = new Object[]{0,workReviewId,userId};
         return this.jdbcTemplate.update(createWorkInterestQuery, createWorkInterestParams);
+    }
+
+    public int checkWorkPurchase(int workId,int userId){
+        String checkInterestQuery = "select exists(select * from work_purchase where work_id=? && user_id=? && status = 1)";
+        Object[] checkInterestParams = new Object[]{workId,userId};
+        int result= this.jdbcTemplate.queryForObject(checkInterestQuery,
+                int.class,
+                checkInterestParams);
+        return result;
+    }
+
+    /*작품 구매하기*/
+    public UserInterest createWorkPurchase(int workId, int userId){
+
+        String createWorkPurchaseQuery = "insert into work_purchase(work_id,user_id) VALUES (?,?)";
+        Object[] createWorkPurchaseParams = new Object[]{workId,userId};
+        this.jdbcTemplate.update(createWorkPurchaseQuery, createWorkPurchaseParams);
+        String lastInserIdQuery = "select last_insert_id()";
+        int getInterestparams=this.jdbcTemplate.queryForObject(lastInserIdQuery,int.class);
+        String getInterestQuery="select * from work_purchase where id=?";
+        return this.jdbcTemplate.queryForObject(getInterestQuery,
+                (rs, rowNum) -> new UserInterest(
+                        rs.getInt("work_id"),
+                        rs.getInt("user_id"),
+                        rs.getInt("status")
+                ),
+                getInterestparams);
     }
 }

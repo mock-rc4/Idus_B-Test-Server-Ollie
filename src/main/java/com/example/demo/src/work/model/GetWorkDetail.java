@@ -11,6 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GetWorkDetail {
+    private int workId;
     private int authorId;
     private String category;
     private String title;
@@ -31,6 +32,7 @@ public class GetWorkDetail {
 
 
     public void setWorkDetail(GetWorkDetailRes getWorkDetailRes){
+        this.setWorkId(getWorkDetailRes.getWorkId());
         this.setAuthorId(getWorkDetailRes.getAuthorId());
         this.setCategory(getWorkDetailRes.getCategory());
         this.setTitle(getWorkDetailRes.getTitle());

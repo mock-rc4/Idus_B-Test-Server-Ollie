@@ -39,6 +39,9 @@ public enum BaseResponseStatus {
     POST_USERS_INVALID_PASSWORD(false, 2022, "비밀번호 형식을 확인해주세요."),
     POST_USERS_ANOTHER_PASSWORD(false, 2023, "비밀번호가 같지 않습니다."),
 
+    USERS_INVALID_WORK_REVIEW(false, 2030, "작품을 구매한 적이 없는 유저는 후기를 남길 수 없습니다."),
+    USERS_INVALID_ONLINE_REVIEW(false, 2031, "온라인클래스를 이용한 적이 없는 유저는 후기를 남길 수 없습니다."),
+    USERS_INVALID_OFFLINE_REVIEW(false, 2031, "오프라인클래스를 이용한 적이 없는 유저는 후기를 남길 수 없습니다."),
     /**
      * 3000 : Response 오류
      */
