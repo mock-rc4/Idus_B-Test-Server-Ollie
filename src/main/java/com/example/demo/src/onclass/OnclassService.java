@@ -43,11 +43,11 @@ public class OnclassService {
 
     /**
      * 작품에 관심 누르기 API*/
-    public UserInterest createOnlineInterest(int workId,int userId) throws BaseException {
+    public UserInterest createOnlineInterest(int onlineId,int userId) throws BaseException {
         //중복
         try{
             UserInterest interest;
-            interest = onclassDao.createOnlineInterest(workId,userId);
+            interest = onclassDao.createOnlineInterest(onlineId,userId);
 
             return interest;
         } catch (Exception exception) {

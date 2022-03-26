@@ -9,6 +9,7 @@ import java.sql.Timestamp;
 @Setter
 @AllArgsConstructor
 public class GetWorkReviewRes {
+    private int workReviewId;
     private String name;
     private float star;
     private String createdAt;

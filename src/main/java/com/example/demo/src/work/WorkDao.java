@@ -220,7 +220,7 @@ public class WorkDao {
 
     public List<GetWorkReviewRes> getWorkReview(int workId){
         String getWorkQuery =
-                "select name, star, wr.created_at, content, img\n" +
+                "select wr.id, name, star, wr.created_at, content, img\n" +
                 "from work_review wr\n" +
                 "join idusB.user u\n" +
                 "on wr.user_id = u.id\n" +
@@ -233,6 +233,7 @@ public class WorkDao {
         SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy년 MM월 dd일");
         return this.jdbcTemplate.query(getWorkQuery,
                 (rs, rowNum) -> new GetWorkReviewRes(
+                        rs.getInt("wr.id"),
                         rs.getString("name"),
                         rs.getFloat("star"),
                         dateFormat.format(rs.getTimestamp("wr.created_at")),
@@ -244,7 +245,7 @@ public class WorkDao {
 
     public List<GetWorkComment> getWorkComment(int workId){
         String getWorkQuery =
-                "select name, content\n" +
+                "select work_comment.id, name, content\n" +
                 "from work_comment\n" +
                 "join idusB.user u\n" +
                 "on work_comment.user_id = u.id\n" +
@@ -252,6 +253,7 @@ public class WorkDao {
         int getWorkParams = workId;
         return this.jdbcTemplate.query(getWorkQuery,
                 (rs, rowNum) -> new GetWorkComment(
+                        rs.getInt("work_comment.id"),
                         rs.getString("name"),
                         rs.getString("content")
                 ),
@@ -284,22 +286,35 @@ public class WorkDao {
     }
 
     /*작품 관심 누르기*/
-    public UserInterest createWorkInterest(UserInterest userInterest,int userId){
+    public UserInterest createWorkInterest(int workId,int userId){
 
-        String createWorkInterestQuery = "insert into work_interest(work_id,user_id) VALUES (?,?)";
-        Object[] createWorkInterestParams = new Object[]{userInterest.getWorkId(),userId};
-        this.jdbcTemplate.update(createWorkInterestQuery, createWorkInterestParams);
+        String checkInterestQuery = "select exists(select * from work_interest where work_id=? && user_id=? && status = 1)";
+        Object[] checkInterestParams = new Object[]{workId,userId};
+        int result= this.jdbcTemplate.queryForObject(checkInterestQuery,
+                int.class,
+                checkInterestParams);
 
-        String lastInserIdQuery = "select last_insert_id()";
-        int getInterestparams=this.jdbcTemplate.queryForObject(lastInserIdQuery,int.class);
-        String getInterestQuery="select * from work_interest where id=?";
-        return this.jdbcTemplate.queryForObject(getInterestQuery,
-                (rs, rowNum) -> new UserInterest(
-                        rs.getInt("work_id"),
-                        rs.getInt("user_id"),
-                        rs.getInt("status")
-                ),
-                getInterestparams);
+        if(result==1){
+            String createWorkInterestQuery = "delete from work_interest where work_id=? && user_id=?";
+            Object[] createWorkInterestParams = new Object[]{workId,userId};
+            this.jdbcTemplate.update(createWorkInterestQuery, createWorkInterestParams);
+        }
+        else{
+            String createWorkInterestQuery = "insert into work_interest(work_id,user_id) VALUES (?,?)";
+            Object[] createWorkInterestParams = new Object[]{workId,userId};
+            this.jdbcTemplate.update(createWorkInterestQuery, createWorkInterestParams);
+            String lastInserIdQuery = "select last_insert_id()";
+            int getInterestparams=this.jdbcTemplate.queryForObject(lastInserIdQuery,int.class);
+            String getInterestQuery="select * from work_interest where id=?";
+            return this.jdbcTemplate.queryForObject(getInterestQuery,
+                    (rs, rowNum) -> new UserInterest(
+                            rs.getInt("work_id"),
+                            rs.getInt("user_id"),
+                            rs.getInt("status")
+                    ),
+                    getInterestparams);
+        }
+        return new UserInterest(workId,userId,0);
     }
 
     /*작품 관심 해제*/
@@ -321,13 +336,14 @@ public class WorkDao {
         String lastInserIdQuery = "select last_insert_id()";
         int getInterestparams=this.jdbcTemplate.queryForObject(lastInserIdQuery,int.class);
         String getInterestQuery="" +
-                "select name,content\n" +
+                "select work_comment.id, name,content\n" +
                 "from work_comment\n" +
                 "join idusB.user\n" +
                 "on work_comment.user_id = user.id\n" +
                 "where work_comment.id=?";
         return this.jdbcTemplate.queryForObject(getInterestQuery,
                 (rs, rowNum) -> new GetWorkComment(
+                        rs.getInt("work_comment.id"),
                         rs.getString("name"),
                         rs.getString("content")
                 ),
@@ -356,7 +372,7 @@ public class WorkDao {
         }
 
         String getInterestQuery="" +
-                "select name, star, wr.created_at, content,img\n" +
+                "select wr.id,name, star, wr.created_at, content,img\n" +
                 "from work_review wr\n" +
                 "join idusB.user u\n" +
                 "on wr.user_id = u.id\n" +
@@ -367,6 +383,7 @@ public class WorkDao {
         SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy년 MM월 dd일");
         return this.jdbcTemplate.queryForObject(getInterestQuery,
                 (rs, rowNum) -> new GetWorkReviewRes(
+                        rs.getInt("wr.id"),
                         rs.getString("name"),
                         rs.getFloat("star"),
                         dateFormat.format(rs.getTimestamp("wr.created_at")),

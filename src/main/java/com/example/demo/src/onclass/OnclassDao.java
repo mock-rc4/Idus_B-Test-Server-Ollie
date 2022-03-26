@@ -265,7 +265,7 @@ public class OnclassDao {
 
     public List<GetWorkReviewRes> getOnlineReview(int onlineId){
         String getWorkQuery =
-                "select name, star, ocr.created_at, content, img\n" +
+                "select ocr.id, name, star, ocr.created_at, content, img\n" +
                 "from online_class_review ocr\n" +
                 "join idusB.user u\n" +
                 "on ocr.user_id = u.id\n" +
@@ -277,6 +277,7 @@ public class OnclassDao {
         SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy년 MM월 dd일");
         return this.jdbcTemplate.query(getWorkQuery,
                 (rs, rowNum) -> new GetWorkReviewRes(
+                        rs.getInt("ocr.id"),
                         rs.getString("name"),
                         rs.getFloat("star"),
                         dateFormat.format(rs.getTimestamp("ocr.created_at")),
@@ -288,7 +289,7 @@ public class OnclassDao {
 
     public List<GetWorkComment> getOnlineComment(int onlineId){
         String getWorkQuery =
-                "select name, content\n" +
+                "select occ.id,name, content\n" +
                 "from online_class_comment occ\n" +
                 "join idusB.user u\n" +
                 "on occ.user_id = u.id\n" +
@@ -296,6 +297,7 @@ public class OnclassDao {
         int getWorkParams = onlineId;
         return this.jdbcTemplate.query(getWorkQuery,
                 (rs, rowNum) -> new GetWorkComment(
+                        rs.getInt("occ.id"),
                         rs.getString("name"),
                         rs.getString("content")
                 ),
@@ -348,24 +350,24 @@ public class OnclassDao {
     }
 
     /*온클에 관심누르기*/
-    public UserInterest createOnlineInterest(int workId,int userId){
+    public UserInterest createOnlineInterest(int onlineId,int userId){
 
         String checkInterestQuery = "select exists(select * from online_class_interest where onclass_id=? && user_id=? && status = 1)";
-        Object[] checkInterestParams = new Object[]{workId,userId};
+        Object[] checkInterestParams = new Object[]{onlineId,userId};
         int result= this.jdbcTemplate.queryForObject(checkInterestQuery,
                 int.class,
                 checkInterestParams);
 
         if(result==1){
-            System.out.println("이미 관심 눌러서 해제됨");
+
             String createWorkInterestQuery = "delete from online_class_interest where onclass_id=? && user_id=?";
-            Object[] createWorkInterestParams = new Object[]{workId,userId};
+            Object[] createWorkInterestParams = new Object[]{onlineId,userId};
             this.jdbcTemplate.update(createWorkInterestQuery, createWorkInterestParams);
         }
         else{
-            System.out.println("관심 누름");
+
             String createWorkInterestQuery = "insert into online_class_interest(onclass_id,user_id) VALUES (?,?)";
-            Object[] createWorkInterestParams = new Object[]{workId,userId};
+            Object[] createWorkInterestParams = new Object[]{onlineId,userId};
             this.jdbcTemplate.update(createWorkInterestQuery, createWorkInterestParams);
             String lastInserIdQuery = "select last_insert_id()";
             int getInterestparams=this.jdbcTemplate.queryForObject(lastInserIdQuery,int.class);
@@ -378,7 +380,7 @@ public class OnclassDao {
                     ),
                     getInterestparams);
         }
-        return new UserInterest(workId,userId,0);
+        return new UserInterest(onlineId,userId,0);
     }
 
     /*온클 댓글 달기*/
@@ -392,7 +394,7 @@ public class OnclassDao {
         int getCommentparams=this.jdbcTemplate.queryForObject(lastInserIdQuery,int.class);
         System.out.println(getCommentparams);
         String getCommentReviewQuery="" +
-                "select name, content\n" +
+                "select occ.id, name, content\n" +
                 "from online_class_comment occ\n" +
                 "join idusB.user u\n" +
                 "on occ.user_id = u.id\n" +
@@ -400,6 +402,7 @@ public class OnclassDao {
 
         return this.jdbcTemplate.queryForObject(getCommentReviewQuery,
                 (rs, rowNum) -> new GetWorkComment(
+                        rs.getInt("occ.id"),
                         rs.getString("name"),
                         rs.getString("content")
                 ),
@@ -430,7 +433,7 @@ public class OnclassDao {
         }
 
         String getInterestQuery="" +
-                "select name, star, ocr.created_at, content, img\n" +
+                "select ocr.id,name, star, ocr.created_at, content, img\n" +
                 "from online_class_review ocr\n" +
                 "join idusB.user u\n" +
                 "on ocr.user_id = u.id\n" +
@@ -441,6 +444,7 @@ public class OnclassDao {
         SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy년 MM월 dd일");
         return this.jdbcTemplate.queryForObject(getInterestQuery,
                 (rs, rowNum) -> new GetWorkReviewRes(
+                        rs.getInt("ocr.id"),
                         rs.getString("name"),
                         rs.getFloat("star"),
                         dateFormat.format(rs.getTimestamp("ocr.created_at")),

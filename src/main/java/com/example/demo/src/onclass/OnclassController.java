@@ -62,7 +62,7 @@ public class OnclassController {
 
     /**
      * 작품 상세 페이지(기본화면) api
-     * [Get] /works/detail */
+     * [Get] /onlines/:onlineId */
     @ResponseBody
     @GetMapping("/{onlineId}") // (GET) 127.0.0.1:9000/app/products/:id 해도 됨...
     public BaseResponse<OnClassDetail> getOnline(@PathVariable("onlineId") int onlineId) {
@@ -98,12 +98,12 @@ public class OnclassController {
      * 온클에 관심누르기 API
      * [GET]} */
     @ResponseBody
-    @GetMapping("/interest")
-    public BaseResponse<UserInterest> createOnlineInterest(@RequestParam(required = false) int workId) {
+    @GetMapping("/interest/{onlineId}")
+    public BaseResponse<UserInterest> createOnlineInterest(@PathVariable("onlineId") int onlineId) {
 
         try{
             int userId = jwtService.getUserIdx();
-            UserInterest interest = onclassService.createOnlineInterest(workId,userId);
+            UserInterest interest = onclassService.createOnlineInterest(onlineId,userId);
             return new BaseResponse<>(interest);
         } catch(BaseException exception){
             return new BaseResponse<>((exception.getStatus()));

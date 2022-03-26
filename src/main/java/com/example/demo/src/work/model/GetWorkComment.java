@@ -7,6 +7,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class GetWorkComment {
+    private int workCommentId;
     private String name;
     private String comment;
 }

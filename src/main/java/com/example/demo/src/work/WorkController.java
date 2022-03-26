@@ -114,12 +114,12 @@ public class WorkController {
      * 작품에 관심누르기 API
      * [POST} */
     @ResponseBody
-    @PostMapping("/interest")
-    public BaseResponse<UserInterest> createWorkInterest(@RequestBody UserInterest userInterest) {
+    @GetMapping("/interest/{workId}")
+    public BaseResponse<UserInterest> createWorkInterest(@PathVariable("workId") int workId) {
 
         try{
             int userId = jwtService.getUserIdx();
-            UserInterest interest = workService.createWorkInterest(userInterest,userId);
+            UserInterest interest = workService.createWorkInterest(workId,userId);
             return new BaseResponse<>(interest);
         } catch(BaseException exception){
             return new BaseResponse<>((exception.getStatus()));

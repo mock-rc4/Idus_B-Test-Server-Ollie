@@ -42,16 +42,11 @@ public class WorkService {
     }
     /**
      * 작품에 관심 누르기 API*/
-    public UserInterest createWorkInterest(UserInterest userInterest,int userId) throws BaseException {
+    public UserInterest createWorkInterest(int workId,int userId) throws BaseException {
         //중복
         try{
             UserInterest interest;
-            if(userInterest.getStatus()==0){
-                interest = workDao.clearWorkInterest(userInterest,userId);
-            }
-            else{
-                interest = workDao.createWorkInterest(userInterest,userId);
-            }
+            interest = workDao.createWorkInterest(workId,userId);
             return interest;
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
