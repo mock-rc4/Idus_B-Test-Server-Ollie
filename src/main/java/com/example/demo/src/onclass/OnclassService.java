@@ -40,4 +40,79 @@ public class OnclassService {
         this.jwtService = jwtService;
 
     }
+
+    /**
+     * 작품에 관심 누르기 API*/
+    public UserInterest createOnlineInterest(int workId,int userId) throws BaseException {
+        //중복
+        try{
+            UserInterest interest;
+            interest = onclassDao.createOnlineInterest(workId,userId);
+
+            return interest;
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    /**
+     * 온클에 댓글 달기 API*/
+    public GetWorkComment createOnlineComment(WorkCommentReview workCommentReview, int userId) throws BaseException {
+        //중복
+        try{
+            GetWorkComment getWorkComment = onclassDao.createOnlineComment(workCommentReview,userId);
+            return getWorkComment;
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    /**
+     * 온클에 단 댓글 삭제 API*/
+    public DeleteResult clearOnlineComment(int onlineCommentId, int userId) throws BaseException {
+        //중복
+        try{
+            int result = onclassDao.clearOnlineComment(onlineCommentId,userId);
+            DeleteResult deleteResult;
+            if(result==0){
+                deleteResult=new DeleteResult(onlineCommentId,"삭제가 불가능합니다.");
+            }
+            else{
+                deleteResult=new DeleteResult(onlineCommentId,"삭제 완료");
+            }
+            return deleteResult;
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    /**
+     * 작품에 후기 쓰기 API*/
+    public GetWorkReviewRes createOnlineReview(WorkCommentReview workCommentReview, int userId) throws BaseException {
+        //중복
+        try{
+            GetWorkReviewRes getWorkReviewRes = onclassDao.createOnlineReview(workCommentReview,userId);
+            return getWorkReviewRes;
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+    /**
+     * 작품에 단 후기 삭제 API*/
+    public DeleteResult clearOnlineReview(int onlineReviewId, int userId) throws BaseException {
+        //중복
+        try{
+            int result = onclassDao.clearOnlineReview(onlineReviewId,userId);
+            DeleteResult deleteResult;
+            if(result==0){
+                deleteResult=new DeleteResult(onlineReviewId,"후기 삭제가 불가능합니다.");
+            }
+            else{
+                deleteResult=new DeleteResult(onlineReviewId,"삭제 완료");
+            }
+            return deleteResult;
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }

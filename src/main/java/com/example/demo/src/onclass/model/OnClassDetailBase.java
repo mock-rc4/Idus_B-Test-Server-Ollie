@@ -10,6 +10,7 @@ import java.sql.Date;
 @AllArgsConstructor
 public class OnClassDetailBase {
     private int authorId;
+    private String video;
     private String category;
     private String title;
     private int price;
