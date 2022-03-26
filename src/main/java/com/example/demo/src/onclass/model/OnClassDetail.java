@@ -16,6 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 public class OnClassDetail {
     private int authorId;
+    private String video;
     private String category;
     private String title;
     private int price;
@@ -32,6 +33,7 @@ public class OnClassDetail {
 
     public void setOnlineDetail(OnClassDetailBase onClassDetailBase) {
         this.authorId=onClassDetailBase.getAuthorId();
+        this.video=onClassDetailBase.getVideo();
         this.category=onClassDetailBase.getCategory();
         this.title=onClassDetailBase.getTitle();
         this.price=onClassDetailBase.getPrice();

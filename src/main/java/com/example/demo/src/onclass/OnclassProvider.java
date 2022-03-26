@@ -89,4 +89,14 @@ public class OnclassProvider {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+    public List<OnclassList> getOnlinesSearch(String word,int userId) throws BaseException{
+        try{
+            List<OnclassList> onclassList = onclassDao.getOnlinesSearch(word,userId);
+            return onclassList;
+        }
+        catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }

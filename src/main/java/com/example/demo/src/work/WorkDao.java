@@ -360,7 +360,7 @@ public class WorkDao {
                 "from work_review wr\n" +
                 "join idusB.user u\n" +
                 "on wr.user_id = u.id\n" +
-                "join work_review_image wri\n" +
+                "left join work_review_image wri\n" +
                 "on wr.id = wri.work_review_id\n" +
                 "where wr.id= ?\n" +
                 "group by wr.id";

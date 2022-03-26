@@ -1,7 +1,8 @@
 package com.example.demo.src.onclass;
 import com.example.demo.src.onclass.model.OnClassDetail;
 import com.example.demo.src.onclass.model.OnclassList;
-import com.example.demo.src.work.model.GetWorkDetail;
+import com.example.demo.src.user.model.UserInterest;
+import com.example.demo.src.work.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.example.demo.config.BaseException;
@@ -75,6 +76,100 @@ public class OnclassController {
         }
     }
 
+    /**
+     * 온라인 클래스 검색 api
+     * [Get] /onlines */
+    @ResponseBody
+    @GetMapping("/")
+    public BaseResponse<List<OnclassList>> getOnlinesSearch(@RequestParam(required = false) String word) {
+        try{
+            if(word==null){
+                System.out.println("null입니다.");
+            }
+            int userId = jwtService.getUserIdx();
+            List<OnclassList>  onclassList = onclassProvider.getOnlinesSearch(word,userId);
+            return new BaseResponse<>(onclassList);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 
+    /**
+     * 온클에 관심누르기 API
+     * [GET]} */
+    @ResponseBody
+    @GetMapping("/interest")
+    public BaseResponse<UserInterest> createOnlineInterest(@RequestParam(required = false) int workId) {
 
+        try{
+            int userId = jwtService.getUserIdx();
+            UserInterest interest = onclassService.createOnlineInterest(workId,userId);
+            return new BaseResponse<>(interest);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    /**
+     * 온클에 댓글달기 API
+     * [POST} */
+    @ResponseBody
+    @PostMapping("/comment")
+    public BaseResponse<GetWorkComment> createOnlineComment(@RequestBody WorkCommentReview workCommentReview) {
+
+        try{
+            int userId = jwtService.getUserIdx();
+            GetWorkComment getWorkComment = onclassService.createOnlineComment(workCommentReview,userId);
+            return new BaseResponse<>(getWorkComment);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    /**
+     * 온클에 단 댓글 삭제 API
+     * [Get} */
+    @ResponseBody
+    @GetMapping("/comment/{onlineCommentId}")
+    public BaseResponse<DeleteResult> clearOnlineComment(@PathVariable("onlineCommentId") int onlineCommentId) {
+
+        try{
+            int userId = jwtService.getUserIdx();
+            DeleteResult deleteResult = onclassService.clearOnlineComment(onlineCommentId,userId);
+            return new BaseResponse<>(deleteResult);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    /**
+     * 온클에 후기 쓰기 API
+     * [POST} */
+    @ResponseBody
+    @PostMapping("/review")
+    public BaseResponse<GetWorkReviewRes> createOnlineReview(@RequestBody WorkCommentReview workCommentReview) {
+
+        try{
+            int userId = jwtService.getUserIdx();
+            GetWorkReviewRes getWorkReviewRes = onclassService.createOnlineReview(workCommentReview,userId);
+            return new BaseResponse<>(getWorkReviewRes);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+    /**
+     * 온클에 단 후기 삭제 API
+     * [Get} */
+    @ResponseBody
+    @GetMapping("/review/{onlineReviewId}")
+    public BaseResponse<DeleteResult> clearOnlineReview(@PathVariable("onlineReviewId") int onlineReviewId) {
+
+        try{
+            int userId = jwtService.getUserIdx();
+            DeleteResult deleteResult = onclassService.clearOnlineReview(onlineReviewId,userId);
+            return new BaseResponse<>(deleteResult);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 }
