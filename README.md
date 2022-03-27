@@ -71,6 +71,7 @@ api명세서:https://docs.google.com/spreadsheets/d/1tHDdcIBoIRphjRwL4aNMx_cqag7
   - 온라인 전체 클래스 목록 (정렬 방식 3가지-최신순, 관심많은순, 후기많은순) API 구현
     - 정렬방식 나누기를 어떻게 표현할까 고민했는데 query params 방식으로 받기로 함. 의미를 잘 파악할 수 있을것 같았기 때문임. 
   - 온라인 클래스 상세 페이지 api구현
+  
 ### 2022 -3 -26 진행상황
   - erd설계 - 구매테이블, 이미지테이블 추가
   - 데이터베이스에 데이터 채워넣기
@@ -85,6 +86,11 @@ api명세서:https://docs.google.com/spreadsheets/d/1tHDdcIBoIRphjRwL4aNMx_cqag7
   관심누르기/해제하기
   - 관심 누르기/해제하기 api를 전에는 json body값으로 {workid, status}를 받아서 status=0이면 해제하고 1이면 누르기로 구현했었는데 비효율적인 것 같아서 방식을 변경했다. 
   - path variabel로 workid를 받고 workid와 status가1인 레코드가 존재하는지 아닌지 검사해서 workid만 받고도 관심 누르기/해제하기를 자연스럽게 할 수 있게 했다.
+
+### 2022 -03 -27 진행상황
+  - 카카오 소셜 로그인 구현
+    - 프론트분이랑 상의 없이 임의로 구현해봄. 상의해야함
   
+
   
   
