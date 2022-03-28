@@ -41,7 +41,11 @@ public enum BaseResponseStatus {
 
     USERS_INVALID_WORK_REVIEW(false, 2030, "작품을 구매한 적이 없는 유저는 후기를 남길 수 없습니다."),
     USERS_INVALID_ONLINE_REVIEW(false, 2031, "온라인클래스를 이용한 적이 없는 유저는 후기를 남길 수 없습니다."),
-    USERS_INVALID_OFFLINE_REVIEW(false, 2031, "오프라인클래스를 이용한 적이 없는 유저는 후기를 남길 수 없습니다."),
+    USERS_INVALID_OFFLINE_REVIEW(false, 2032, "오프라인클래스를 이용한 적이 없는 유저는 후기를 남길 수 없습니다."),
+
+    POST_KAKAO_INVALID_TOKEN(false,2050,"유효하지않은 카카오 토큰입니다."),
+    POST_KAKAO_LOGIN_FAIL(false,2051,"카카오 로그인실패"),
+    POST_KAKAO_LOGIN_EXISTS(false,2051,"중복된 카카오아이디입니다."),
     /**
      * 3000 : Response 오류
      */

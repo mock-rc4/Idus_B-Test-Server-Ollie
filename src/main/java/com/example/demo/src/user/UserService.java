@@ -7,11 +7,20 @@ import com.example.demo.config.secret.Secret;
 import com.example.demo.src.user.model.*;
 import com.example.demo.utils.AES128;
 import com.example.demo.utils.JwtService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
 import javax.sql.DataSource;
 
@@ -81,5 +90,105 @@ public class UserService {
         } catch(Exception exception){
             throw new BaseException(DATABASE_ERROR);
         }
+    }
+
+    public PostLoginRes loginKakao(String code,String phone) throws BaseException{
+        try{
+            String accessToken=getAccessToken(code);
+            KakaoGetUser kakaoGetUser=getUserInfoByToken(accessToken);
+            String kakaoid="kakao"+kakaoGetUser.getKakaoId();
+            String email=kakaoGetUser.getEmail();
+            System.out.println("여기");
+            int id;
+            if(userProvider.checkEmail(email)==1){
+                System.out.println("여기2");
+                User user=userDao.kakaoUser(email);
+                id=user.getId();
+            }else{
+                System.out.println("여기3");
+                PostUserReq postUserReq=new PostUserReq();
+                postUserReq.setSocial("kakao");
+                postUserReq.setSocialId(kakaoid);
+                postUserReq.setEmail(email);
+                postUserReq.setName(kakaoGetUser.getName());
+                postUserReq.setPhone(phone);
+                postUserReq.setPassword("");
+                PostUserRes postUserRes=createUser(postUserReq);
+                id=postUserRes.getUserIdx();
+            }
+            System.out.println("여기4");
+            String jwt = jwtService.createJwt(id);
+            System.out.println("여기5");
+            return new PostLoginRes(id,jwt);
+        }catch (Exception e){
+            throw new BaseException(POST_KAKAO_LOGIN_EXISTS);
+        }
+
+    }
+
+    public String getAccessToken(String authorizedCode) throws JsonProcessingException {
+        System.out.println("getAccessToken 호출");
+        // HttpHeader 오브젝트 생성
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+
+        // HttpBody 오브젝트 생성
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("grant_type", "authorization_code");
+        params.add("client_id", "9adca47b25d38d5f1826188403e6caca");
+        params.add("redirect_uri", "http://localhost:9000/oauth/kakao");
+        params.add("code", authorizedCode);
+
+        // HttpHeader와 HttpBody를 하나의 오브젝트에 담기
+        RestTemplate rt = new RestTemplate();
+        HttpEntity<MultiValueMap<String, String>> kakaoTokenRequest =
+                new HttpEntity<>(params, headers);
+
+        // Http 요청하기, Post방식으로, 그리고 response 변수의 응답 받음
+        ResponseEntity<String> response = rt.exchange(
+                "https://kauth.kakao.com/oauth/token",
+                HttpMethod.POST,
+                kakaoTokenRequest,
+                String.class
+        );
+
+        // JSON -> 액세스 토큰 파싱
+        String accessToken="";
+        String tokenJson = response.getBody();
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        KakaoAccessTokenRes kakaoAccessTokenRes = objectMapper.readValue(tokenJson, KakaoAccessTokenRes.class);
+        System.out.println("액세스 토큰임 : "+ kakaoAccessTokenRes.getAccess_token());
+        accessToken= kakaoAccessTokenRes.getAccess_token();
+        return accessToken;
+    }
+    public KakaoGetUser getUserInfoByToken(String accessToken) throws JsonProcessingException {
+
+        // HttpHeader 오브젝트 생성
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + accessToken);
+        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+
+        // HttpHeader와 HttpBody를 하나의 오브젝트에 담기
+        RestTemplate rt = new RestTemplate();
+        HttpEntity<MultiValueMap<String, String>> kakaoProfileRequest = new HttpEntity<>(headers);
+
+        // Http 요청하기 - Post방식으로 - 그리고 response 변수의 응답 받음.
+        ResponseEntity<String> response = rt.exchange(
+                "https://kapi.kakao.com/v2/user/me",
+                HttpMethod.POST,
+                kakaoProfileRequest,
+                String.class
+        );
+        String result=response.getBody();
+        ObjectMapper objectMapper = new ObjectMapper();
+        System.out.println(result);
+        KakaoUserRes kakaoUserRes = objectMapper.readValue(result, KakaoUserRes.class);
+        System.out.println("카카오 유저 Idx : "+ kakaoUserRes.getId());
+        System.out.println("카카오 유저 닉넴 : "+ kakaoUserRes.getProperties().getNickname());
+        System.out.println("카카오 유저 이메일 : "+ kakaoUserRes.getKakao_account().getEmail());
+        KakaoGetUser kakaoGetUser=new KakaoGetUser(kakaoUserRes.getId(),kakaoUserRes.getProperties().getNickname(),kakaoUserRes.getKakao_account().getEmail());
+        //가져온 사용자 정보를 객체로 만들어서 반환
+        return kakaoGetUser;
     }
 }
