@@ -35,81 +35,81 @@ public class OffclassService {
 
     }
 
-//    /**
-//     * 작품에 관심 누르기 API*/
-//    public UserInterest createOnlineInterest(int onlineId,int userId) throws BaseException {
-//        //중복
-//        try{
-//            UserInterest interest;
-//            interest = onclassDao.createOnlineInterest(onlineId,userId);
-//
-//            return interest;
-//        } catch (Exception exception) {
-//            throw new BaseException(DATABASE_ERROR);
-//        }
-//    }
-//
-//    /**
-//     * 온클에 댓글 달기 API*/
-//    public GetWorkComment createOnlineComment(WorkCommentReview workCommentReview, int userId) throws BaseException {
-//        //중복
-//        try{
-//            GetWorkComment getWorkComment = onclassDao.createOnlineComment(workCommentReview,userId);
-//            return getWorkComment;
-//        } catch (Exception exception) {
-//            throw new BaseException(DATABASE_ERROR);
-//        }
-//    }
-//
-//    /**
-//     * 온클에 단 댓글 삭제 API*/
-//    public DeleteResult clearOnlineComment(int onlineCommentId, int userId) throws BaseException {
-//        //중복
-//        try{
-//            int result = onclassDao.clearOnlineComment(onlineCommentId,userId);
-//            DeleteResult deleteResult;
-//            if(result==0){
-//                deleteResult=new DeleteResult(onlineCommentId,"삭제가 불가능합니다.");
-//            }
-//            else{
-//                deleteResult=new DeleteResult(onlineCommentId,"삭제 완료");
-//            }
-//            return deleteResult;
-//        } catch (Exception exception) {
-//            throw new BaseException(DATABASE_ERROR);
-//        }
-//    }
-//
-//    /**
-//     * 온클에 후기 쓰기 API*/
-//    public GetWorkReviewRes createOnlineReview(WorkCommentReview workCommentReview, int userId) throws BaseException {
-//        //중복
-//        try{
-//            GetWorkReviewRes getWorkReviewRes = onclassDao.createOnlineReview(workCommentReview,userId);
-//            return getWorkReviewRes;
-//        } catch (Exception exception) {
-//            throw new BaseException(USERS_INVALID_ONLINE_REVIEW);
-//        }
-//    }
-//    /**
-//     * 온클에 단 후기 삭제 API*/
-//    public DeleteResult clearOnlineReview(int onlineReviewId, int userId) throws BaseException {
-//        //중복
-//        try{
-//            int result = onclassDao.clearOnlineReview(onlineReviewId,userId);
-//            DeleteResult deleteResult;
-//            if(result==0){
-//                deleteResult=new DeleteResult(onlineReviewId,"후기 삭제가 불가능합니다.");
-//            }
-//            else{
-//                deleteResult=new DeleteResult(onlineReviewId,"삭제 완료");
-//            }
-//            return deleteResult;
-//        } catch (Exception exception) {
-//            throw new BaseException(DATABASE_ERROR);
-//        }
-//    }
-//
+    /**
+     * 작품에 관심 누르기 API*/
+    public UserInterest createOfflineInterest(int offlineId,int userId) throws BaseException {
+        //중복
+        try{
+            UserInterest interest;
+            interest = offclassDao.createOfflineInterest(offlineId,userId);
+
+            return interest;
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    /**
+     * 온클에 댓글 달기 API*/
+    public GetWorkComment createOfflineComment(WorkCommentReview workCommentReview, int userId) throws BaseException {
+        //중복
+        try{
+            GetWorkComment getWorkComment = offclassDao.createOfflineComment(workCommentReview,userId);
+            return getWorkComment;
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    /**
+     * 온클에 단 댓글 삭제 API*/
+    public DeleteResult clearOfflineComment(int offlineCommentId, int userId) throws BaseException {
+        //중복
+        try{
+            int result = offclassDao.clearOfflineComment(offlineCommentId,userId);
+            DeleteResult deleteResult;
+            if(result==0){
+                deleteResult=new DeleteResult(offlineCommentId,"삭제가 불가능합니다.");
+            }
+            else{
+                deleteResult=new DeleteResult(offlineCommentId,"삭제 완료");
+            }
+            return deleteResult;
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    /**
+     * 온클에 후기 쓰기 API*/
+    public GetWorkReviewRes createOfflineReview(WorkCommentReview workCommentReview, int userId) throws BaseException {
+        //중복
+        try{
+            GetWorkReviewRes getWorkReviewRes = offclassDao.createOfflineReview(workCommentReview,userId);
+            return getWorkReviewRes;
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+    /**
+     * 온클에 단 후기 삭제 API*/
+    public DeleteResult clearOfflineReview(int offlineReviewId, int userId) throws BaseException {
+        //중복
+        try{
+            int result = offclassDao.clearOfflineReview(offlineReviewId,userId);
+            DeleteResult deleteResult;
+            if(result==0){
+                deleteResult=new DeleteResult(offlineReviewId,"후기 삭제가 불가능합니다.");
+            }
+            else{
+                deleteResult=new DeleteResult(offlineReviewId,"삭제 완료");
+            }
+            return deleteResult;
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
 //    /**
 //     * 온클 구매하기 API*/
 //    public UserInterest createOnlinePurchase(int onlineId,int userId) throws BaseException {

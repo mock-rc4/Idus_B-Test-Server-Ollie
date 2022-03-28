@@ -1,5 +1,6 @@
 package com.example.demo.src.user;
 
+import com.example.demo.src.work.model.GetWorkSearch;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -75,6 +76,25 @@ public class UserController {
             int userIdxByJwt = jwtService.getUserIdx();
             GetUserRes getUserRes = userProvider.getUserProfile(userIdxByJwt);
             return new BaseResponse<>(getUserRes);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+
+    }
+
+    /**
+     * 회원 1명 작품 관심목록 조회 API
+     * [GET] /users/profile
+     * @return BaseResponse<GetUserRes>
+     */
+    @ResponseBody
+    @GetMapping("/interest/work") // (GET) 127.0.0.1:9000/app/users
+    public BaseResponse<List<GetWorkSearch>> getUserInterest() {
+        // Get Users
+        try{
+            int userId = jwtService.getUserIdx();
+            List<GetWorkSearch> getWorkSearch = userProvider.getUserInterest(userId);
+            return new BaseResponse<>(getWorkSearch);
         } catch(BaseException exception){
             return new BaseResponse<>((exception.getStatus()));
         }
@@ -210,6 +230,7 @@ public class UserController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+
 
 
 }
