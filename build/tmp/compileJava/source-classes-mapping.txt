@@ -1,15 +1,47 @@
 com/example/demo/src/work/model/DeleteResult.java
  com.example.demo.src.work.model.DeleteResult
-com/example/demo/src/user/model/PostUserReq.java
- com.example.demo.src.user.model.PostUserReq
 com/example/demo/config/Constant.java
  com.example.demo.config.Constant
-com/example/demo/src/work/model/GetWorkComment.java
- com.example.demo.src.work.model.GetWorkComment
-com/example/demo/src/work/model/GetWorkRealTime.java
- com.example.demo.src.work.model.GetWorkRealTime
 com/example/demo/utils/ValidationRegex.java
  com.example.demo.utils.ValidationRegex
+com/example/demo/config/BaseResponseStatus.java
+ com.example.demo.config.BaseResponseStatus
+com/example/demo/src/user/model/KakaoUserResProperties.java
+ com.example.demo.src.user.model.KakaoUserResProperties
+com/example/demo/src/work/model/GetWorkNewRes.java
+ com.example.demo.src.work.model.GetWorkNewRes
+com/example/demo/src/work/WorkController.java
+ com.example.demo.src.work.WorkController
+com/example/demo/config/secret/Secret.java
+ com.example.demo.config.secret.Secret
+com/example/demo/src/onclass/OnclassProvider.java
+ com.example.demo.src.onclass.OnclassProvider
+com/example/demo/src/user/model/PostUserRes.java
+ com.example.demo.src.user.model.PostUserRes
+com/example/demo/src/work/WorkService.java
+ com.example.demo.src.work.WorkService
+com/example/demo/config/BaseResponse.java
+ com.example.demo.config.BaseResponse
+com/example/demo/src/user/UserService.java
+ com.example.demo.src.user.UserService
+com/example/demo/config/BaseException.java
+ com.example.demo.config.BaseException
+com/example/demo/src/user/model/UserInterest.java
+ com.example.demo.src.user.model.UserInterest
+com/example/demo/src/user/model/KakaoAccessTokenRes.java
+ com.example.demo.src.user.model.KakaoAccessTokenRes
+com/example/demo/src/onclass/model/OnClassDetailBase.java
+ com.example.demo.src.onclass.model.OnClassDetailBase
+com/example/demo/src/work/model/GetWorkKeyword.java
+ com.example.demo.src.work.model.GetWorkKeyword
+com/example/demo/src/user/model/PostUserReq.java
+ com.example.demo.src.user.model.PostUserReq
+com/example/demo/src/work/model/GetWorkComment.java
+ com.example.demo.src.work.model.GetWorkComment
+com/example/demo/src/user/model/KakaoGetUser.java
+ com.example.demo.src.user.model.KakaoGetUser
+com/example/demo/src/work/model/GetWorkRealTime.java
+ com.example.demo.src.work.model.GetWorkRealTime
 com/example/demo/src/user/model/PostLoginRes.java
  com.example.demo.src.user.model.PostLoginRes
 com/example/demo/src/onclass/OnclassService.java
@@ -22,67 +54,47 @@ com/example/demo/src/work/model/GetWorkSearch.java
  com.example.demo.src.work.model.GetWorkSearch
 com/example/demo/utils/AES128.java
  com.example.demo.utils.AES128
-com/example/demo/config/BaseResponseStatus.java
- com.example.demo.config.BaseResponseStatus
 com/example/demo/src/onclass/model/OnClassDetail.java
  com.example.demo.src.onclass.model.OnClassDetail
 com/example/demo/src/user/model/PatchUserReq.java
  com.example.demo.src.user.model.PatchUserReq
 com/example/demo/src/WebSecurityConfig.java
  com.example.demo.src.WebSecurityConfig
+com/example/demo/src/user/KakaoController.java
+ com.example.demo.src.user.KakaoController
 com/example/demo/src/test/TestController.java
  com.example.demo.src.test.TestController
-com/example/demo/src/work/model/GetWorkNewRes.java
- com.example.demo.src.work.model.GetWorkNewRes
+com/example/demo/src/user/model/KakaoUserRes.java
+ com.example.demo.src.user.model.KakaoUserRes
 com/example/demo/src/user/model/PostLoginReq.java
  com.example.demo.src.user.model.PostLoginReq
 com/example/demo/src/work/WorkDao.java
  com.example.demo.src.work.WorkDao
-com/example/demo/src/work/WorkController.java
- com.example.demo.src.work.WorkController
 com/example/demo/src/work/model/GetWorkDetailRes.java
  com.example.demo.src.work.model.GetWorkDetailRes
-com/example/demo/config/secret/Secret.java
- com.example.demo.config.secret.Secret
 com/example/demo/src/onclass/model/OnclassList.java
  com.example.demo.src.onclass.model.OnclassList
-com/example/demo/src/onclass/OnclassProvider.java
- com.example.demo.src.onclass.OnclassProvider
 com/example/demo/src/onclass/OnclassDao.java
  com.example.demo.src.onclass.OnclassDao
-com/example/demo/src/user/model/PostUserRes.java
- com.example.demo.src.user.model.PostUserRes
 com/example/demo/src/user/UserController.java
  com.example.demo.src.user.UserController
 com/example/demo/src/work/WorkProvider.java
  com.example.demo.src.work.WorkProvider
-com/example/demo/src/work/WorkService.java
- com.example.demo.src.work.WorkService
-com/example/demo/config/BaseResponse.java
- com.example.demo.config.BaseResponse
 com/example/demo/src/work/model/GetWorkReviewRes.java
  com.example.demo.src.work.model.GetWorkReviewRes
 com/example/demo/src/user/model/User.java
  com.example.demo.src.user.model.User
-com/example/demo/src/user/UserService.java
- com.example.demo.src.user.UserService
+com/example/demo/src/user/model/KakaoUserResAccount.java
+ com.example.demo.src.user.model.KakaoUserResAccount
 com/example/demo/src/onclass/OnclassController.java
  com.example.demo.src.onclass.OnclassController
 com/example/demo/src/user/model/GetUserRes.java
  com.example.demo.src.user.model.GetUserRes
-com/example/demo/config/BaseException.java
- com.example.demo.config.BaseException
 com/example/demo/DemoApplication.java
  com.example.demo.DemoApplication
-com/example/demo/src/user/model/UserInterest.java
- com.example.demo.src.user.model.UserInterest
 com/example/demo/utils/JwtService.java
  com.example.demo.utils.JwtService
 com/example/demo/src/user/UserProvider.java
  com.example.demo.src.user.UserProvider
-com/example/demo/src/onclass/model/OnClassDetailBase.java
- com.example.demo.src.onclass.model.OnClassDetailBase
 com/example/demo/src/work/model/GetWorkDetail.java
  com.example.demo.src.work.model.GetWorkDetail
-com/example/demo/src/work/model/GetWorkKeyword.java
- com.example.demo.src.work.model.GetWorkKeyword

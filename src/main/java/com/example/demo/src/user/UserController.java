@@ -1,5 +1,6 @@
 package com.example.demo.src.user;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.example.demo.config.BaseException;
@@ -175,6 +176,19 @@ public class UserController {
             return new BaseResponse<>(exception.getStatus());
         }
     }
+//    /**
+//     * 카카오 로그인 API*/
+//    @ResponseBody
+//    @GetMapping("/kakaologIn")
+//    public BaseResponse<PostLoginRes> loginKakao(@RequestParam(required = false) String code, String phone){
+//        try{
+//          PostLoginRes postLoginRes=userService.loginKakao(code,phone);
+//          return new BaseResponse<>(postLoginRes);
+//        }catch (BaseException exception){
+//            return new BaseResponse<>((exception.getStatus()));
+//        }
+//
+//    }
 
     /**
      * 유저정보변경 API
@@ -188,7 +202,7 @@ public class UserController {
             //jwt에서 idx 추출.
             int userIdxByJwt = jwtService.getUserIdx();
 
-            getUserRes.setId(userIdxByJwt); ;
+            getUserRes.setId(userIdxByJwt);
             GetUserRes patchProfile=userService.modifyUserProfile(getUserRes);
 
         return new BaseResponse<>(patchProfile);

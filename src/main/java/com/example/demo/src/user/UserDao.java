@@ -74,16 +74,25 @@ public class UserDao {
     
 
     public PostUserRes createUser(PostUserReq postUserReq){
-        String createUserQuery = "insert into user (email, name, password, phone,recommended_code,receiving_consent) VALUES (?,?,?,?,?,?)";
 
-        Object[] createUserParams = new Object[]{postUserReq.getEmail(), postUserReq.getName(), postUserReq.getPassword(),postUserReq.getPhone(),
-        postUserReq.getRecommendedCode(),postUserReq.getReceivingConsent()};
-        this.jdbcTemplate.update(createUserQuery, createUserParams);
+        if(postUserReq.getSocial()==null) {
+            System.out.println("소셜아님");
+            String createUserQuery = "insert into user (email, name, password, phone,recommended_code,receiving_consent) VALUES (?,?,?,?,?,?)";
+
+            Object[] createUserParams = new Object[]{postUserReq.getEmail(), postUserReq.getName(), postUserReq.getPassword(), postUserReq.getPhone(),
+                    postUserReq.getRecommendedCode(), postUserReq.getReceivingConsent()};
+            this.jdbcTemplate.update(createUserQuery, createUserParams);
+        }else if(postUserReq.getSocial()=="kakao"){
+            String createUserQuery = "insert into user (email, name, password, phone,recommended_code,receiving_consent,social,social_id) VALUES (?,?,?,?,?,?,?,?)";
+
+            Object[] createUserParams = new Object[]{postUserReq.getEmail(), postUserReq.getName(), postUserReq.getPassword(), postUserReq.getPhone(),
+                    postUserReq.getRecommendedCode(), postUserReq.getReceivingConsent(),postUserReq.getSocial(),postUserReq.getSocialId()};
+            this.jdbcTemplate.update(createUserQuery, createUserParams);
+        }
 
         String lastInserIdQuery = "select last_insert_id()";
         String getNameQuery="select id, name from user where id=?";
         int getNameParams=this.jdbcTemplate.queryForObject(lastInserIdQuery,int.class);
-        System.out.println(getNameParams);
         return this.jdbcTemplate.queryForObject(getNameQuery,
                 (rs, rowNum) -> new PostUserRes(
                         rs.getInt("id"),
@@ -141,6 +150,35 @@ public class UserDao {
                 getPwdParams
                 );
 
+    }
+
+    public User kakaoUser(String email){
+        String retrieveUserQuery = ""
+                + "SELECT * "
+                + "FROM   user "
+                + "WHERE  email = ?;";
+        String retrieveUserParams = email;
+        return this.jdbcTemplate.queryForObject(retrieveUserQuery,
+                ((rs, rowNum) -> new User(
+                        rs.getInt("id"),
+                        rs.getString("email"),
+                        rs.getString("name"),
+                        rs.getString("password"),
+                        rs.getString("phone"),
+                        rs.getString("recommended_code"),
+                        rs.getInt("receiving_consent"),
+                        rs.getInt("status"),
+                        rs.getTimestamp("created_at"),
+                        rs.getTimestamp("updated_at"),
+                        rs.getString("social"),
+                        rs.getString("social_id"),
+                        rs.getDate("birthday"),
+                        rs.getInt("gender"),
+                        rs.getString("recipient"),
+                        rs.getString("recipient_phone"),
+                        rs.getString("address"),
+                        rs.getString("profile_img")
+                )), retrieveUserParams);
     }
 
 }
