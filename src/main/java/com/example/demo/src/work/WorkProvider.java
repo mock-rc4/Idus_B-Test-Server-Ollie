@@ -30,6 +30,10 @@ public class WorkProvider {
 
     public List<GetWorkNewRes> getWorksNew(int userIdxByJwt) throws BaseException{
         try{
+            if(userIdxByJwt==0){
+                List<GetWorkNewRes> getWorkNewRes = workDao.getWorksNewNotLogin();
+                return getWorkNewRes;
+            }
             List<GetWorkNewRes> getWorkNewRes = workDao.getWorksNew(userIdxByJwt);
             return getWorkNewRes;
         }

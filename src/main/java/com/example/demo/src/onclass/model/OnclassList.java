@@ -9,6 +9,7 @@ import java.sql.Date;
 @Setter
 @AllArgsConstructor
 public class OnclassList {
+
     private int onlineId;
     private int authorId;
     private String video;

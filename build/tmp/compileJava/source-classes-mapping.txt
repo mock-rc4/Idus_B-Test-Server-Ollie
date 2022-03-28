@@ -6,6 +6,8 @@ com/example/demo/utils/ValidationRegex.java
  com.example.demo.utils.ValidationRegex
 com/example/demo/config/BaseResponseStatus.java
  com.example.demo.config.BaseResponseStatus
+com/example/demo/src/offclass/OffclassDao.java
+ com.example.demo.src.offclass.OffclassDao
 com/example/demo/src/user/model/KakaoUserResProperties.java
  com.example.demo.src.user.model.KakaoUserResProperties
 com/example/demo/src/work/model/GetWorkNewRes.java
@@ -16,6 +18,8 @@ com/example/demo/config/secret/Secret.java
  com.example.demo.config.secret.Secret
 com/example/demo/src/onclass/OnclassProvider.java
  com.example.demo.src.onclass.OnclassProvider
+com/example/demo/src/offclass/OffclassProvider.java
+ com.example.demo.src.offclass.OffclassProvider
 com/example/demo/src/user/model/PostUserRes.java
  com.example.demo.src.user.model.PostUserRes
 com/example/demo/src/work/WorkService.java
@@ -24,6 +28,8 @@ com/example/demo/config/BaseResponse.java
  com.example.demo.config.BaseResponse
 com/example/demo/src/user/UserService.java
  com.example.demo.src.user.UserService
+com/example/demo/src/offclass/model/OffClassDetailBase.java
+ com.example.demo.src.offclass.model.OffClassDetailBase
 com/example/demo/config/BaseException.java
  com.example.demo.config.BaseException
 com/example/demo/src/user/model/UserInterest.java
@@ -52,6 +58,8 @@ com/example/demo/src/user/UserDao.java
  com.example.demo.src.user.UserDao
 com/example/demo/src/work/model/GetWorkSearch.java
  com.example.demo.src.work.model.GetWorkSearch
+com/example/demo/src/offclass/model/OffclassList.java
+ com.example.demo.src.offclass.model.OffclassList
 com/example/demo/utils/AES128.java
  com.example.demo.utils.AES128
 com/example/demo/src/onclass/model/OnClassDetail.java
@@ -70,8 +78,12 @@ com/example/demo/src/user/model/PostLoginReq.java
  com.example.demo.src.user.model.PostLoginReq
 com/example/demo/src/work/WorkDao.java
  com.example.demo.src.work.WorkDao
+com/example/demo/src/offclass/OffclassController.java
+ com.example.demo.src.offclass.OffclassController
 com/example/demo/src/work/model/GetWorkDetailRes.java
  com.example.demo.src.work.model.GetWorkDetailRes
+com/example/demo/src/offclass/OffclassService.java
+ com.example.demo.src.offclass.OffclassService
 com/example/demo/src/onclass/model/OnclassList.java
  com.example.demo.src.onclass.model.OnclassList
 com/example/demo/src/onclass/OnclassDao.java
@@ -80,6 +92,8 @@ com/example/demo/src/user/UserController.java
  com.example.demo.src.user.UserController
 com/example/demo/src/work/WorkProvider.java
  com.example.demo.src.work.WorkProvider
+com/example/demo/src/offclass/model/OffClassDetail.java
+ com.example.demo.src.offclass.model.OffClassDetail
 com/example/demo/src/work/model/GetWorkReviewRes.java
  com.example.demo.src.work.model.GetWorkReviewRes
 com/example/demo/src/user/model/User.java
