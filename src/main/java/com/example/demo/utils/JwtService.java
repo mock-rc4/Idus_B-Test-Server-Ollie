@@ -53,7 +53,7 @@ public class JwtService {
         //1. JWT 추출
         String accessToken = getJwt();
         if(accessToken == null || accessToken.length() == 0){
-            return 0;
+            return 0; //0을 리턴함으로써 자연스럽게 jwt토큰 없을때 interestStatus 가 0으로 나옴. user_id가 0인 게 없으니까 그런듯
             //throw new BaseException(EMPTY_JWT);
         }
 

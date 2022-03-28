@@ -4,6 +4,7 @@ package com.example.demo.src.user;
 import com.example.demo.config.BaseException;
 import com.example.demo.config.secret.Secret;
 import com.example.demo.src.user.model.*;
+import com.example.demo.src.work.model.GetWorkSearch;
 import com.example.demo.utils.AES128;
 import com.example.demo.utils.JwtService;
 import org.slf4j.Logger;
@@ -60,7 +61,14 @@ public class UserProvider {
             throw new BaseException(DATABASE_ERROR);
         }
     }
-
+    public List<GetWorkSearch> getUserInterest(int userIdx) throws BaseException {
+        try {
+            List<GetWorkSearch> getWorkSearch = userDao.getUserInterest(userIdx);
+            return getWorkSearch;
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
     public int checkEmail(String email) throws BaseException{
         try{
             return userDao.checkEmail(email);
