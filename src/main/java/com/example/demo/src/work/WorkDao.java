@@ -59,6 +59,35 @@ public class WorkDao {
         );
     }
 
+    public List<GetWorkNewRes> getWorksNewNotLogin() {
+        String getWorksNewQuery =
+                "select *\n" +
+                        "from (\n" +
+                        "select w.id,author_id, title,img,\n" +
+                        "       0 as interestStatus,\n" +
+                        "       w.created_at\n" +
+                        "from work w\n" +
+                        "left join work_interest wi\n" +
+                        "on w.id = wi.work_id\n" +
+                        "left join (\n" +
+                        "    select work_id,img\n" +
+                        "    from work_image\n" +
+                        "    group by work_id\n" +
+                        ") image\n" +
+                        "on w.id=image.work_id\n" +
+                        "group by w.id) orderWork\n" +
+                        "order by orderWork.created_at desc";
+        return this.jdbcTemplate.query(getWorksNewQuery,
+                (rs, rowNum) -> new GetWorkNewRes(
+                        rs.getInt("id"),
+                        rs.getInt("author_id"),
+                        rs.getString("title"),
+                        rs.getString("img"),
+                        rs.getInt("interestStatus")
+                )
+        );
+    }
+
     public List<GetWorkRealTime> getWorksRealTime(int userId) {
         String getWorksNewQuery =
                 "select *\n" +
