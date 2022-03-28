@@ -43,8 +43,12 @@ public class WorkProvider {
     }
     public GetWorkDetail getWork(int workId, int userId) throws BaseException {
         try {
-
-            GetWorkDetailRes getWorkDetailRes = workDao.getWork(workId,userId);
+            GetWorkDetailRes getWorkDetailRes;
+            if(userId==0){
+                getWorkDetailRes = workDao.getWorkNotLogin(workId);
+            }else{
+                getWorkDetailRes = workDao.getWork(workId,userId);
+            }
             List<String> keywords=workDao.getWorkKeyword(workId);
             List<String> imgs=workDao.getWorkImg(workId);
 

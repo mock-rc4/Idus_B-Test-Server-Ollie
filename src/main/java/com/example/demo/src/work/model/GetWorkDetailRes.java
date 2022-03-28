@@ -1,11 +1,13 @@
 package com.example.demo.src.work.model;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 public class GetWorkDetailRes {
     private int workId;
     private int authorId;

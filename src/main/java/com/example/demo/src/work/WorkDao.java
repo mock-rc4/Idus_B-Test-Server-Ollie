@@ -255,6 +255,39 @@ public class WorkDao {
                 getWorkParams2, getWorkParams);
     }
 
+    public GetWorkDetailRes getWorkNotLogin(int workId) {
+        String getWorkQuery =
+                "select w.id,author_id, category, title, price, delivery_price, delivery_start,quantity,content, 0 as interestStatus, starCnt, star\n" +
+                        "from work w\n" +
+                        "left join(\n" +
+                        "    select work_id,count(star) as starCnt,AVG(star) as star\n" +
+                        "    from work_review\n" +
+                        "    where work_review.status=1" +
+                        "    group by work_id\n" +
+                        ") work_star\n" +
+                        "on w.id=work_star.work_id\n" +
+                        "join work_category wc\n" +
+                        "on w.category_id = wc.id\n" +
+                        "where w.id= ?";
+        int getWorkParams = workId;
+        return this.jdbcTemplate.queryForObject(getWorkQuery,
+                (rs, rowNum) -> new GetWorkDetailRes(
+                        rs.getInt("id"),
+                        rs.getInt("author_id"),
+                        rs.getString("category"),
+                        rs.getString("title"),
+                        rs.getInt("price"),
+                        rs.getInt("delivery_price"),
+                        rs.getString("delivery_start"),
+                        rs.getString("quantity"),
+                        rs.getString("content"),
+                        rs.getInt("interestStatus"),
+                        rs.getInt("starCnt"),
+                        rs.getFloat("star")
+                ),
+                 getWorkParams);
+    }
+
     public List<GetWorkReviewRes> getWorkReview(int workId){
         String getWorkQuery =
                 "select wr.id, name, star, wr.created_at, content, img\n" +
