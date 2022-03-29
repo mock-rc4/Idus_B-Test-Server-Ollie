@@ -354,7 +354,61 @@ public class WorkDao {
                 ),
                 getWorkParams);
     }
+    public List<WorkCategory> getWorksCategory(){
+        String getWorkQuery =
+                "select id,category\n" +
+                "from work_category";
 
+        return this.jdbcTemplate.query(getWorkQuery,
+                (rs, rowNum) -> new WorkCategory(
+                        rs.getInt("id"),
+                        rs.getString("category")
+                ));
+    }
+    /*작품 카테고리 별 목록 api*/
+    public List<GetWorkSearch> getWorksbyCategory(int categoryId,int userId) {
+        String getWorksNewQuery =
+                "select w.id, author_id, title,img,\n" +
+                "       max( case\n" +
+                "           when wi.user_id =? then wi.status\n" +
+                "           when wi.user_id!=? then 0\n" +
+                "           when wi.user_id is null then 0\n" +
+                "       end ) as interestStatus,\n" +
+                "       w.created_at,\n" +
+                "       wr.content as workReview,\n" +
+                "       price,\n" +
+                "       count(star) as starCnt,\n" +
+                "       AVG(star) as star\n" +
+                "from work w\n" +
+                "left join work_interest wi\n" +
+                "on w.id = wi.work_id\n" +
+                "left join (\n" +
+                "    select work_id,img\n" +
+                "    from work_image\n" +
+                "    group by work_id\n" +
+                ") image\n" +
+                "on w.id=image.work_id\n" +
+                "left join work_review wr\n" +
+                "on w.id = wr.work_id && wr.status=1\n" +
+                "where category_id=?\n" +
+                "group by w.id;";
+        int getWorksNewParams = userId;
+        int getWorksNewParams2=categoryId;
+        return this.jdbcTemplate.query(getWorksNewQuery,
+                (rs, rowNum) -> new GetWorkSearch(
+                        rs.getInt("id"),
+                        rs.getInt("author_id"),
+                        rs.getString("title"),
+                        rs.getString("img"),
+                        rs.getInt("interestStatus"),
+                        rs.getString("workReview"),
+                        rs.getInt("price"),
+                        rs.getInt("starCnt"),
+                        rs.getFloat("star")
+                ),
+                getWorksNewParams, getWorksNewParams,getWorksNewParams2
+        );
+    }
     /*작품 관심 누르기*/
     public UserInterest createWorkInterest(int workId,int userId){
 

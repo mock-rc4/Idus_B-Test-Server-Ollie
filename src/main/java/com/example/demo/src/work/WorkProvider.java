@@ -98,4 +98,23 @@ public class WorkProvider {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+    public List<WorkCategory> getWorksCategory() throws BaseException{
+        try{
+            List<WorkCategory> workCategory = workDao.getWorksCategory();
+            return workCategory;
+        }
+        catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+    public List<GetWorkSearch> getWorksbyCategory(int categoryId,int userId) throws BaseException{
+        try{
+            List<GetWorkSearch> getWorkSearch = workDao.getWorksbyCategory(categoryId,userId);
+            return getWorkSearch;
+        }
+        catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }

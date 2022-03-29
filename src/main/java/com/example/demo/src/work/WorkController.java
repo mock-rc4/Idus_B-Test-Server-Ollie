@@ -109,6 +109,34 @@ public class WorkController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+    /**
+     * 작품 카테고리 목록 api
+     * [Get] /works */
+    @ResponseBody
+    @GetMapping("/category")
+    public BaseResponse<List<WorkCategory>> getWorksCategory() {
+        try{
+            List<WorkCategory> workCategory = workProvider.getWorksCategory();
+            return new BaseResponse<>(workCategory);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+    /**
+     * 작품 상세 페이지(기본화면) api
+     * [Get] /works/detail */
+    @ResponseBody
+    @GetMapping("/category/{categoryId}") // (GET) 127.0.0.1:9000/app/products/:id 해도 됨...
+    public BaseResponse<List<GetWorkSearch>> getWorksbyCategory(@PathVariable("categoryId") int categoryId) {
+        // Get Users
+        try{
+            int userIdx = jwtService.getUserIdx();
+            List<GetWorkSearch> getWorkSearch = workProvider.getWorksbyCategory(categoryId,userIdx);
+            return new BaseResponse<>(getWorkSearch);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 
     /**
      * 작품에 관심누르기 API
