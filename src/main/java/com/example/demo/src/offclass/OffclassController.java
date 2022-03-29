@@ -73,7 +73,7 @@ public class OffclassController {
 
 
     /**
-     * 온클에 관심누르기 API
+     * 오클에 관심누르기 API
      * [GET]} */
     @ResponseBody
     @GetMapping("/interest/{offlineId}")
@@ -89,7 +89,7 @@ public class OffclassController {
     }
 
     /**
-     * 온클에 댓글달기 API
+     * 오클에 댓글달기 API
      * [POST} */
     @ResponseBody
     @PostMapping("/comment")
@@ -105,7 +105,7 @@ public class OffclassController {
     }
 
     /**
-     * 온클에 단 댓글 삭제 API
+     * 오클에 단 댓글 삭제 API
      * [Get} */
     @ResponseBody
     @GetMapping("/comment/{offlineCommentId}")
@@ -121,7 +121,7 @@ public class OffclassController {
     }
 
     /**
-     * 온클에 후기 쓰기 API
+     * 오클에 후기 쓰기 API
      * [POST} */
     @ResponseBody
     @PostMapping("/review")
@@ -136,7 +136,7 @@ public class OffclassController {
         }
     }
     /**
-     * 온클에 단 후기 삭제 API
+     * 오클에 단 후기 삭제 API
      * [Get} */
     @ResponseBody
     @GetMapping("/review/{offlineReviewId}")

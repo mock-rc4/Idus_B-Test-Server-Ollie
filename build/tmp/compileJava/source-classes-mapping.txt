@@ -44,6 +44,8 @@ com/example/demo/src/user/model/PostUserReq.java
  com.example.demo.src.user.model.PostUserReq
 com/example/demo/src/work/model/GetWorkComment.java
  com.example.demo.src.work.model.GetWorkComment
+com/example/demo/src/work/model/WorkCategory.java
+ com.example.demo.src.work.model.WorkCategory
 com/example/demo/src/user/model/KakaoGetUser.java
  com.example.demo.src.user.model.KakaoGetUser
 com/example/demo/src/work/model/GetWorkRealTime.java
