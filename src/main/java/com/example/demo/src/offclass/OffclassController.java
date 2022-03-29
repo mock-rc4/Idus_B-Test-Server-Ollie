@@ -70,7 +70,33 @@ public class OffclassController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
-
+    /**
+     * 오클 카테고리 목록 api
+     * [Get] /works */
+    @ResponseBody
+    @GetMapping("/category")
+    public BaseResponse<List<WorkCategory>> getOfflinesCategory() {
+        try{
+            List<WorkCategory> workCategory = offclassProvider.getOfflinesCategory();
+            return new BaseResponse<>(workCategory);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+    /**
+     * 오클 카테고리 별 조회 api
+     * [Get] /offlines/category/:categoryId */
+    @ResponseBody
+    @GetMapping("/category/{categoryId}") // (GET) 127.0.0.1:9000/app/products/:id 해도 됨...
+    public BaseResponse<List<OffclassList>> getOfflinesbyCategory(@PathVariable("categoryId") int categoryId) {
+        // Get Users
+        try{
+            List<OffclassList> offclassList = offclassProvider.getOfflinesbyCategory(categoryId);
+            return new BaseResponse<>(offclassList);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 
     /**
      * 오클에 관심누르기 API

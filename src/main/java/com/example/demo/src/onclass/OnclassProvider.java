@@ -99,4 +99,23 @@ public class OnclassProvider {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+    public List<WorkCategory> getOnlinesCategory() throws BaseException{
+        try{
+            List<WorkCategory> workCategory = onclassDao.getOnlinesCategory();
+            return workCategory;
+        }
+        catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+//    public List<OnclassList> getOnlinesbyCategory(int categoryId,int userId) throws BaseException{
+//        try{
+//            List<OnclassList> onclassList = onclassDao.getOnlinesbyCategory(categoryId,userId);
+//            return onclassList;
+//        }
+//        catch (Exception exception) {
+//            throw new BaseException(DATABASE_ERROR);
+//        }
+//    }
 }

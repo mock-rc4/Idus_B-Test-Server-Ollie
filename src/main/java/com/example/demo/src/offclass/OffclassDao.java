@@ -8,6 +8,7 @@ import com.example.demo.src.onclass.model.OnclassList;
 import com.example.demo.src.user.model.UserInterest;
 import com.example.demo.src.work.model.GetWorkComment;
 import com.example.demo.src.work.model.GetWorkReviewRes;
+import com.example.demo.src.work.model.WorkCategory;
 import com.example.demo.src.work.model.WorkCommentReview;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -171,9 +172,69 @@ public class OffclassDao {
                 ),
                 getWorkParams);
     }
+    /*오클 카테고리 조회*/
+    public List<WorkCategory> getOfflinesCategory(){
+        String getWorkQuery =
+                "select id,category\n" +
+                        "from offline_class_category";
 
+        return this.jdbcTemplate.query(getWorkQuery,
+                (rs, rowNum) -> new WorkCategory(
+                        rs.getInt("id"),
+                        rs.getString("category")
+                ));
+    }
+    /*오클 카테고리 별 조회*/
+    public List<OffclassList> getOfflinesbyCategory(int categoryId) {
+        String getClassesNewQuery =
+                "select *\n" +
+                "from(\n" +
+                "select oc.id,\n" +
+                "       author_id,\n" +
+                "       img,\n" +
+                "       city,\n" +
+                "       town,\n" +
+                "       category,\n" +
+                "       title,\n" +
+                "       star,\n" +
+                "       starCnt,\n" +
+                "       oc.created_at\n" +
+                "from offline_class oc\n" +
+                "join offline_class_category occ\n" +
+                "on oc.category_id = occ.id\n" +
+                "left join offline_class_review ocr\n" +
+                "on oc.id = ocr.offclass_id && ocr.status=1\n" +
+                "left join(\n" +
+                "    select offclass_id,count(star) as starCnt\n" +
+                "    from offline_class_review ocr\n" +
+                "        where ocr.status=1\n" +
+                "    group by offclass_id\n" +
+                ") offline_star\n" +
+                "on oc.id=offline_star.offclass_id\n" +
+                "left join offline_class_image\n" +
+                "on oc.id = offline_class_image.offclass_id\n" +
+                "left join offline_class_location ocl\n" +
+                "on oc.id = ocl.offclass_id\n" +
+                "where oc.category_id=?\n" +
+                "group by oc.id) oc\n" +
+                "order by rand()";
+        int categorynum=categoryId;
+        return this.jdbcTemplate.query(getClassesNewQuery,
+                (rs, rowNum) -> new OffclassList(
+                        rs.getInt("id"),
+                        rs.getInt("author_id"),
+                        rs.getString("img"),
+                        rs.getString("city"),
+                        rs.getString("town"),
+                        rs.getString("category"),
+                        rs.getString("title"),
+                        rs.getFloat("star"),
+                        rs.getInt("starCnt")
+                ),categorynum
+        );
+    }
 
-    /*온클에 관심누르기*/
+    /*오클에 관심누르기*/
     public UserInterest createOfflineInterest(int offlineId,int userId){
 
         String checkInterestQuery = "select exists(select * from offline_class_interest where offclass_id=? && user_id=? && status = 1)";
