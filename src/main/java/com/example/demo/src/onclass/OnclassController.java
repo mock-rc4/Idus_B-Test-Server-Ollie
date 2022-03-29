@@ -97,6 +97,35 @@ public class OnclassController {
     }
 
     /**
+     * 온클 카테고리 목록 api
+     * [Get] /works */
+    @ResponseBody
+    @GetMapping("/category")
+    public BaseResponse<List<WorkCategory>> getOnlinesCategory() {
+        try{
+            List<WorkCategory> workCategory = onclassProvider.getOnlinesCategory();
+            return new BaseResponse<>(workCategory);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+//    /**
+//     * 온클 카테고리 별 조회 api
+//     * [Get] /works/category/:categoryId */
+//    @ResponseBody
+//    @GetMapping("/category/{categoryId}") // (GET) 127.0.0.1:9000/app/products/:id 해도 됨...
+//    public BaseResponse<List<OnclassList>> getOnlinesbyCategory(@PathVariable("categoryId") int categoryId) {
+//        // Get Users
+//        try{
+//            int userIdx = jwtService.getUserIdx();
+//            List<OnclassList> onclassList = onclassProvider.getOnlinesbyCategory(categoryId,userIdx);
+//            return new BaseResponse<>(onclassList);
+//        } catch(BaseException exception){
+//            return new BaseResponse<>((exception.getStatus()));
+//        }
+//    }
+
+    /**
      * 온클에 관심누르기 API
      * [GET]} */
     @ResponseBody

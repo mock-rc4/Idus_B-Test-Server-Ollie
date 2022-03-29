@@ -358,7 +358,18 @@ public class OnclassDao {
                 getClassesSearchParams,getClassesSearchParams, keyword
         );
     }
+    /*온클 카테고리 조회*/
+    public List<WorkCategory> getOnlinesCategory(){
+        String getWorkQuery =
+                "select id,category\n" +
+                "from online_class_category";
 
+        return this.jdbcTemplate.query(getWorkQuery,
+                (rs, rowNum) -> new WorkCategory(
+                        rs.getInt("id"),
+                        rs.getString("category")
+                ));
+    }
     /*온클에 관심누르기*/
     public UserInterest createOnlineInterest(int onlineId,int userId){
 

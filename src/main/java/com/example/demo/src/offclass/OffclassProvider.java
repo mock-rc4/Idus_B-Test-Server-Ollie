@@ -10,6 +10,7 @@ import com.example.demo.src.onclass.model.OnClassDetailBase;
 import com.example.demo.src.onclass.model.OnclassList;
 import com.example.demo.src.work.model.GetWorkComment;
 import com.example.demo.src.work.model.GetWorkReviewRes;
+import com.example.demo.src.work.model.WorkCategory;
 import com.example.demo.utils.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,5 +70,22 @@ public class OffclassProvider {
         }
     }
 
-
+    public List<WorkCategory> getOfflinesCategory() throws BaseException{
+        try{
+            List<WorkCategory> workCategory = offclassDao.getOfflinesCategory();
+            return workCategory;
+        }
+        catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+        public List<OffclassList> getOfflinesbyCategory(int categoryId) throws BaseException{
+        try{
+            List<OffclassList> offclassList = offclassDao.getOfflinesbyCategory(categoryId);
+            return offclassList;
+        }
+        catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }
