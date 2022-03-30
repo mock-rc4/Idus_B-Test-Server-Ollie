@@ -104,4 +104,18 @@ api명세서:https://docs.google.com/spreadsheets/d/1tHDdcIBoIRphjRwL4aNMx_cqag7
   - 내일 추가할 api
     - 작품 상세 페이지의 같은 카테고리 인기작품 추천 
     - 내가 쓴 구매후기
-  
+
+### 2022 -03 -30 진행상황
+  - 같은 카테고리 작품 추천 api 구현
+  - 온라인 클래스 정렬 api수정
+    - 정렬방식을 int로 받았다가 string으로 수정함. string으로 받으면 의미가 명확하여 불필요한 중간과정을 없앨 수 있다.
+  - validation 추가 
+    - 댓글, 후기 내용이 비었는지 확인
+    - 별점이 0~5사이인지 확인
+  - 소셜로그인 수정
+    - 인증코드를 받는게 아니라 accesstoken을 받는 형식으로 수정함
+  - 위도, 경도값을 받고 전체 지번 주소를 리턴해내는 api 구현
+    - 카카오맵 로컬 api사용
+    - header로 restapi를 전달하는 과정에서 "KakaoAK"+APPKEY(restapi값 상수) 를 전달했는데 에러 나서 "KakaoAK restapi값"으로 바꿔줬더니 성공함
+    - json 파싱 위해 json-simple 이용
+    
