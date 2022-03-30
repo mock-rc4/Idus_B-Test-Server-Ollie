@@ -98,14 +98,11 @@ public class UserService {
             KakaoGetUser kakaoGetUser=getUserInfoByToken(accessToken);
             String kakaoid="kakao"+kakaoGetUser.getKakaoId();
             String email=kakaoGetUser.getEmail();
-            System.out.println("여기");
             int id;
             if(userProvider.checkEmail(email)==1){
-                System.out.println("여기2");
                 User user=userDao.kakaoUser(email);
                 id=user.getId();
             }else{
-                System.out.println("여기3");
                 PostUserReq postUserReq=new PostUserReq();
                 postUserReq.setSocial("kakao");
                 postUserReq.setSocialId(kakaoid);
@@ -116,9 +113,7 @@ public class UserService {
                 PostUserRes postUserRes=createUser(postUserReq);
                 id=postUserRes.getUserIdx();
             }
-            System.out.println("여기4");
             String jwt = jwtService.createJwt(id);
-            System.out.println("여기5");
             return new PostLoginRes(id,jwt);
         }catch (Exception e){
             throw new BaseException(POST_KAKAO_LOGIN_FAIL);
