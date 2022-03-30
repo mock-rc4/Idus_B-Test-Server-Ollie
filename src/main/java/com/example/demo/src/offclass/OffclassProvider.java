@@ -79,9 +79,19 @@ public class OffclassProvider {
             throw new BaseException(DATABASE_ERROR);
         }
     }
-        public List<OffclassList> getOfflinesbyCategory(int categoryId) throws BaseException{
+    public List<OffclassList> getOfflinesbyCategory(int categoryId) throws BaseException{
         try{
             List<OffclassList> offclassList = offclassDao.getOfflinesbyCategory(categoryId);
+            return offclassList;
+        }
+        catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    public List<OffclassList> getOfflinesbylocation(String location) throws BaseException{
+        try{
+            List<OffclassList> offclassList = offclassDao.getOfflinesbylocation(location);
             return offclassList;
         }
         catch (Exception exception) {

@@ -35,15 +35,30 @@ public class KakaoController {
 //        System.out.println("###access_Token#### : " + access_Token);
 //        return "testPage";
 //    }
+//    /**
+//     * 카카오 로그인 API
+//     */
+//    @ResponseBody
+//    @GetMapping("/kakao")
+//    public BaseResponse<PostLoginRes> loginKakao(@RequestParam(required = false) String code, String phone) {
+//        try {
+//            PostLoginRes postLoginRes = userService.loginKakao(code, phone);
+//            return new BaseResponse<>(postLoginRes);
+//        } catch (BaseException exception) {
+//            return new BaseResponse<>((exception.getStatus()));
+//        }
+//
+//    }
+
 
     /**
      * 카카오 로그인 API
      */
     @ResponseBody
     @GetMapping("/kakao")
-    public BaseResponse<PostLoginRes> loginKakao(@RequestParam(required = false) String code, String phone) {
+    public BaseResponse<PostLoginRes> loginKakao(@RequestParam(required = false) String accessToken, String phone) {
         try {
-            PostLoginRes postLoginRes = userService.loginKakao(code, phone);
+            PostLoginRes postLoginRes = userService.loginKakao(accessToken, phone);
             return new BaseResponse<>(postLoginRes);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));

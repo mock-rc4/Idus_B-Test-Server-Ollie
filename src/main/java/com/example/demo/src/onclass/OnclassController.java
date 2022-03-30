@@ -1,4 +1,5 @@
 package com.example.demo.src.onclass;
+import com.example.demo.config.BaseResponseStatus;
 import com.example.demo.src.onclass.model.OnClassDetail;
 import com.example.demo.src.onclass.model.OnclassList;
 import com.example.demo.src.user.model.UserInterest;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.example.demo.config.BaseResponseStatus.DATABASE_ERROR;
+import static com.example.demo.config.BaseResponseStatus.*;
 
 @RestController
 @RequestMapping("/app/onlines")
@@ -40,22 +41,21 @@ public class OnclassController {
      */
     @ResponseBody
     @GetMapping("")
-    public BaseResponse<List<OnclassList>> getOnlines(@RequestParam(required = false) Integer sort){
+    public BaseResponse<List<OnclassList>> getOnlines(@RequestParam(required = false) String sort){
         try {
             int userId = jwtService.getUserIdx();
-            System.out.println(sort);
-            if (sort == null) {
+            if (sort.equals("new")) {
                 List<OnclassList> onclassList = onclassProvider.getOnlinesNew(userId);
                 return new BaseResponse<>(onclassList);
-            } else if (sort == 1) {
+            } else if (sort.equals("interest")) {
                 List<OnclassList> onclassList = onclassProvider.getOnlinesInterest(userId);
                 return new BaseResponse<>(onclassList);
-            }else if(sort == 2){
+            }else if(sort.equals("review")){
                 List<OnclassList> onclassList = onclassProvider.getOnlinesReview(userId);
                 return new BaseResponse<>(onclassList);
+            }else{
+                return new BaseResponse<>(ONLINE_SORT_ERROR);
             }
-            List<OnclassList> onclassList = onclassProvider.getOnlinesRandom(userId);
-            return new BaseResponse<>(onclassList);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
         }
@@ -149,6 +149,9 @@ public class OnclassController {
     public BaseResponse<GetWorkComment> createOnlineComment(@RequestBody WorkCommentReview workCommentReview) {
 
         try{
+            if(workCommentReview.getContent()==null){
+                return new BaseResponse<>(BaseResponseStatus.POST_REVIEW_EMPTY_CONTENT);
+            }
             int userId = jwtService.getUserIdx();
             GetWorkComment getWorkComment = onclassService.createOnlineComment(workCommentReview,userId);
             return new BaseResponse<>(getWorkComment);
@@ -181,6 +184,15 @@ public class OnclassController {
     public BaseResponse<GetWorkReviewRes> createOnlineReview(@RequestBody WorkCommentReview workCommentReview) {
 
         try{
+            if(workCommentReview.getContent()==null){
+                return new BaseResponse<>(BaseResponseStatus.POST_REVIEW_EMPTY_CONTENT);
+            }
+            if(workCommentReview.getStar()>5){
+                return new BaseResponse<>(BaseResponseStatus.POST_REVIEW_STAR_MAX);
+            }
+            if(workCommentReview.getStar()<0){
+                return new BaseResponse<>(BaseResponseStatus.POST_REVIEW_STAR_MIN);
+            }
             int userId = jwtService.getUserIdx();
             GetWorkReviewRes getWorkReviewRes = onclassService.createOnlineReview(workCommentReview,userId);
             return new BaseResponse<>(getWorkReviewRes);

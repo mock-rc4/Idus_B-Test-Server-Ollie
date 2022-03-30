@@ -98,7 +98,15 @@ public class WorkProvider {
             throw new BaseException(DATABASE_ERROR);
         }
     }
-
+    public List<WorkRecommend> getWorksRecommend(int workId) throws BaseException{
+        try{
+            List<WorkRecommend> workRecommend = workDao.getWorksRecommend(workId);
+            return workRecommend;
+        }
+        catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
     public List<WorkCategory> getWorksCategory() throws BaseException{
         try{
             List<WorkCategory> workCategory = workDao.getWorksCategory();
