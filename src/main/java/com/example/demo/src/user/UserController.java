@@ -231,6 +231,12 @@ public class UserController {
         }
     }
 
-
+    /*좌표변경*/
+    @ResponseBody
+    @GetMapping("/address") // (GET) 127.0.0.1:9000/app/users
+    public BaseResponse<String> getUsers(@RequestParam(required = false) String longi, String lati) {
+        String add = userService.getAddress(lati,longi);
+        return new BaseResponse<>(add);
+    }
 
 }
