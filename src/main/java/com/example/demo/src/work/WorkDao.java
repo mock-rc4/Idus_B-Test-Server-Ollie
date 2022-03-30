@@ -365,6 +365,33 @@ public class WorkDao {
                         rs.getString("category")
                 ));
     }
+    /*작품 추천*/
+    public List<WorkRecommend> getWorksRecommend(int workId){
+        String getWorkCategory="" +
+                "select category_id\n" +
+                "from work\n" +
+                "where work.id=?";
+        int getworkId=workId;
+        int categoryId= this.jdbcTemplate.queryForObject(getWorkCategory,
+                        int.class,
+                        getworkId);
+
+        String getWorkQuery =
+                "select w.id, title, img\n" +
+                "from work w\n" +
+                "left join work_image wi\n" +
+                "on w.id = wi.work_id\n" +
+                "where w.category_id=? && w.id not in (?)\n" +
+                "group by w.id;";
+
+        return this.jdbcTemplate.query(getWorkQuery,
+                (rs, rowNum) -> new WorkRecommend(
+                        rs.getInt("id"),
+                        rs.getString("img"),
+                        rs.getString("title")
+                ),categoryId,getworkId);
+    }
+
     /*작품 카테고리 별 목록 api*/
     public List<GetWorkSearch> getWorksbyCategory(int categoryId,int userId) {
         String getWorksNewQuery =

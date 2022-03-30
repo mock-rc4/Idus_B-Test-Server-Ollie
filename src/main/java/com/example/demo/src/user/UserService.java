@@ -92,9 +92,9 @@ public class UserService {
         }
     }
 
-    public PostLoginRes loginKakao(String code,String phone) throws BaseException{
+    public PostLoginRes loginKakao(String accessToken,String phone) throws BaseException{
         try{
-            String accessToken=getAccessToken(code);
+            //String accessToken=getAccessToken(code);
             KakaoGetUser kakaoGetUser=getUserInfoByToken(accessToken);
             String kakaoid="kakao"+kakaoGetUser.getKakaoId();
             String email=kakaoGetUser.getEmail();
@@ -121,7 +121,7 @@ public class UserService {
             System.out.println("여기5");
             return new PostLoginRes(id,jwt);
         }catch (Exception e){
-            throw new BaseException(POST_KAKAO_LOGIN_EXISTS);
+            throw new BaseException(POST_KAKAO_LOGIN_FAIL);
         }
 
     }

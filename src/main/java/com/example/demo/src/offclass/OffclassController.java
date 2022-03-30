@@ -1,4 +1,5 @@
 package com.example.demo.src.offclass;
+import com.example.demo.config.BaseResponseStatus;
 import com.example.demo.src.offclass.model.OffClassDetail;
 import com.example.demo.src.offclass.model.OffclassList;
 
@@ -97,7 +98,20 @@ public class OffclassController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
-
+    /**
+     * 오클  지역 별 조회 api
+     * [Get] /offlines/location*/
+    @ResponseBody
+    @GetMapping("/location") // (GET) 127.0.0.1:9000/app/products/:id 해도 됨...
+    public BaseResponse<List<OffclassList>> getOfflinesbylocation(@RequestParam(required = false) String location) {
+        // Get Users
+        try{
+            List<OffclassList> offclassList = offclassProvider.getOfflinesbylocation(location);
+            return new BaseResponse<>(offclassList);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
     /**
      * 오클에 관심누르기 API
      * [GET]} */
@@ -122,6 +136,9 @@ public class OffclassController {
     public BaseResponse<GetWorkComment> createOfflineComment(@RequestBody WorkCommentReview workCommentReview) {
 
         try{
+            if(workCommentReview.getContent()==null){
+                return new BaseResponse<>(BaseResponseStatus.POST_REVIEW_EMPTY_CONTENT);
+            }
             int userId = jwtService.getUserIdx();
             GetWorkComment getWorkComment = offclassService.createOfflineComment(workCommentReview,userId);
             return new BaseResponse<>(getWorkComment);
@@ -154,6 +171,15 @@ public class OffclassController {
     public BaseResponse<GetWorkReviewRes> createOfflineReview(@RequestBody WorkCommentReview workCommentReview) {
 
         try{
+            if(workCommentReview.getContent()==null){
+                return new BaseResponse<>(BaseResponseStatus.POST_REVIEW_EMPTY_CONTENT);
+            }
+            if(workCommentReview.getStar()>5){
+                return new BaseResponse<>(BaseResponseStatus.POST_REVIEW_STAR_MAX);
+            }
+            if(workCommentReview.getStar()<0){
+                return new BaseResponse<>(BaseResponseStatus.POST_REVIEW_STAR_MIN);
+            }
             int userId = jwtService.getUserIdx();
             GetWorkReviewRes getWorkReviewRes = offclassService.createOfflineReview(workCommentReview,userId);
             return new BaseResponse<>(getWorkReviewRes);

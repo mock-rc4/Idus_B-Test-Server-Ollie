@@ -233,7 +233,59 @@ public class OffclassDao {
                 ),categorynum
         );
     }
+    /*오클 지역별 조회*/
+    public List<OffclassList> getOfflinesbylocation(String location) {
+        String getClassesNewQuery =
+                "select *\n" +
+                "from(\n" +
+                "select oc.id,\n" +
+                "       author_id,\n" +
+                "       img,\n" +
+                "       city,\n" +
+                "       town,\n" +
+                "       category,\n" +
+                "       title,\n" +
+                "       star,\n" +
+                "       starCnt,\n" +
+                "       oc.created_at\n" +
+                "from offline_class oc\n" +
+                "join offline_class_category occ\n" +
+                "on oc.category_id = occ.id\n" +
+                "left join offline_class_review ocr\n" +
+                "on oc.id = ocr.offclass_id && ocr.status=1\n" +
+                "left join(\n" +
+                "    select offclass_id,count(star) as starCnt\n" +
+                "    from offline_class_review ocr\n" +
+                "        where ocr.status=1\n" +
+                "    group by offclass_id\n" +
+                ") offline_star\n" +
+                "on oc.id=offline_star.offclass_id\n" +
+                "left join offline_class_image\n" +
+                "on oc.id = offline_class_image.offclass_id\n" +
+                "join (\n" +
+                "    select offclass_id, province,city,town\n" +
+                "    from offline_class_location\n" +
+                "    where city=?\n" +
+                ")ocl\n" +
+                "on oc.id = ocl.offclass_id\n" +
+                "group by oc.id) oc\n" +
+                "order by rand();";
 
+        String locationWord=location;
+        return this.jdbcTemplate.query(getClassesNewQuery,
+                (rs, rowNum) -> new OffclassList(
+                        rs.getInt("id"),
+                        rs.getInt("author_id"),
+                        rs.getString("img"),
+                        rs.getString("city"),
+                        rs.getString("town"),
+                        rs.getString("category"),
+                        rs.getString("title"),
+                        rs.getFloat("star"),
+                        rs.getInt("starCnt")
+                ),locationWord
+        );
+    }
     /*오클에 관심누르기*/
     public UserInterest createOfflineInterest(int offlineId,int userId){
 

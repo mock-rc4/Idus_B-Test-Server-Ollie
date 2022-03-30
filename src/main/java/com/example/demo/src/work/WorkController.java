@@ -1,4 +1,5 @@
 package com.example.demo.src.work;
+import com.example.demo.config.BaseResponseStatus;
 import com.example.demo.src.user.model.GetUserRes;
 import com.example.demo.src.user.model.UserInterest;
 import com.example.demo.src.work.model.*;
@@ -57,6 +58,20 @@ public class WorkController {
             int userIdx = jwtService.getUserIdx();
             GetWorkDetail getWorkDetail = workProvider.getWork(workId,userIdx);
             return new BaseResponse<>(getWorkDetail);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+    /**
+     * 작품 상세 페이지 작품 추천 api
+     * [Get] /works/detail */
+    @ResponseBody
+    @GetMapping("/{workId}/recommend") // (GET) 127.0.0.1:9000/app/products/:id 해도 됨...
+    public BaseResponse<List<WorkRecommend>> getWorksRecommend(@PathVariable("workId") int workId) {
+        // Get Users
+        try{
+            List<WorkRecommend> workRecommend = workProvider.getWorksRecommend(workId);
+            return new BaseResponse<>(workRecommend);
         } catch(BaseException exception){
             return new BaseResponse<>((exception.getStatus()));
         }
@@ -161,6 +176,9 @@ public class WorkController {
     public BaseResponse<GetWorkComment> createWorkComment(@RequestBody WorkCommentReview workCommentReview) {
 
         try{
+            if(workCommentReview.getContent()==null){
+                return new BaseResponse<>(BaseResponseStatus.POST_REVIEW_EMPTY_CONTENT);
+            }
             int userId = jwtService.getUserIdx();
             GetWorkComment getWorkComment = workService.createWorkComment(workCommentReview,userId);
             return new BaseResponse<>(getWorkComment);
@@ -191,6 +209,15 @@ public class WorkController {
     public BaseResponse<GetWorkReviewRes> createWorkReview(@RequestBody WorkCommentReview workCommentReview) {
 
         try{
+            if(workCommentReview.getContent()==null){
+                return new BaseResponse<>(BaseResponseStatus.POST_REVIEW_EMPTY_CONTENT);
+            }
+            if(workCommentReview.getStar()>5){
+                return new BaseResponse<>(BaseResponseStatus.POST_REVIEW_STAR_MAX);
+            }
+            if(workCommentReview.getStar()<0){
+                return new BaseResponse<>(BaseResponseStatus.POST_REVIEW_STAR_MIN);
+            }
             int userId = jwtService.getUserIdx();
             GetWorkReviewRes getWorkReviewRes = workService.createWorkReview(workCommentReview,userId);
             return new BaseResponse<>(getWorkReviewRes);

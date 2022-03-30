@@ -45,7 +45,13 @@ public enum BaseResponseStatus {
 
     POST_KAKAO_INVALID_TOKEN(false,2050,"유효하지않은 카카오 토큰입니다."),
     POST_KAKAO_LOGIN_FAIL(false,2051,"카카오 로그인실패"),
-    POST_KAKAO_LOGIN_EXISTS(false,2051,"중복된 카카오아이디입니다."),
+    POST_KAKAO_LOGIN_EXISTS(false,2052,"중복된 카카오아이디입니다."),
+
+    ONLINE_SORT_ERROR(false,2060,"정렬 방식이 잘못되었습니다."),
+
+    POST_REVIEW_STAR_MAX(false,2070,"최대 별점은 5점입니다. 다시 입력해주세요."),
+    POST_REVIEW_STAR_MIN(false,2072,"별점은 0점 밑으로 내려가면 안됩니다. 다시 입력해주세요."),
+    POST_REVIEW_EMPTY_CONTENT(false,2071,"내용을 입력해주세요"),
     /**
      * 3000 : Response 오류
      */
