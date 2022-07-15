@@ -581,4 +581,11 @@ public class WorkDao {
                 ),
                 getInterestparams);
     }
+
+    //작품이미지에 작품 이미지 넣음
+    public void putImage(int workId,String imgurl){
+        String checkInterestQuery = "insert into work_image (work_id,img) VALUES (?,?)";
+        Object[] checkInterestParams = new Object[]{workId,imgurl};
+        this.jdbcTemplate.update(checkInterestQuery, checkInterestParams);
+    }
 }

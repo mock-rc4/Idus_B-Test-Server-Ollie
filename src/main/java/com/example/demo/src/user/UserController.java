@@ -32,7 +32,6 @@ public class UserController {
 
 
 
-
     public UserController(UserProvider userProvider, UserService userService, JwtService jwtService){
         this.userProvider = userProvider;
         this.userService = userService;
@@ -139,10 +138,6 @@ public class UserController {
         if(postUserReq.getPhone() == null){
             return new BaseResponse<>(POST_USERS_EMPTY_PHONE);
         }
-        //전화번호 정규표현
-//        if(!isRegexPhone(user.getPhone())){
-//            return new BaseResponse<>();
-//        }
         if(postUserReq.getPassword()==null){
             return new BaseResponse<>(POST_USERS_EMPTY_PASSWORD);
         }
@@ -236,6 +231,13 @@ public class UserController {
     @GetMapping("/address") // (GET) 127.0.0.1:9000/app/users
     public BaseResponse<String> getUsers(@RequestParam(required = false) String longi, String lati) {
         String add = userService.getAddress(lati,longi);
+        return new BaseResponse<>(add);
+    }
+    /*동 검색*/
+    @ResponseBody
+    @GetMapping("/search") // (GET) 127.0.0.1:9000/app/users
+    public BaseResponse<UserAddressList> getUserLocation(@RequestParam(required = false) String word) {
+        UserAddressList add = userService.getLocation(word);
         return new BaseResponse<>(add);
     }
 

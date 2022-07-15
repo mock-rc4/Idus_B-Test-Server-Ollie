@@ -9,6 +9,7 @@ import com.example.demo.utils.AES128;
 import com.example.demo.utils.JwtService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.NoArgsConstructor;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -32,7 +33,10 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.example.demo.config.BaseResponseStatus.*;
 
@@ -197,7 +201,62 @@ public class UserService {
         //가져온 사용자 정보를 객체로 만들어서 반환
         return kakaoGetUser;
     }
+    public UserAddressList getLocation(String word){
+        List<String> searchResult=new ArrayList<String>();
+        UserAddressList userAddressList=new UserAddressList();
+        try {
 
+            // 파라미터를 사용하여 요청 URL을 구성한다.
+            String apiURL = "https://dapi.kakao.com/v2/local/search/address.json?" +
+                    "query=" + word;
+
+            HttpHeaders headers=new HttpHeaders();
+            headers.add("Authorization","KakaoAK 9adca47b25d38d5f1826188403e6caca");
+
+//            MultiValueMap<String,String> parameters=new LinkedMultiValueMap<String,String>();
+//            parameters.add("x",longi);
+//            parameters.add("y",lati);
+//            parameters.add("input_coord","WGS84");
+
+            RestTemplate restTemplate=new RestTemplate();
+            ResponseEntity<String> result=restTemplate.exchange(apiURL,HttpMethod.GET,new HttpEntity<>(headers),String.class);
+
+            JSONParser jsonParser=new JSONParser();
+            JSONObject jsonObject=(JSONObject)jsonParser.parse(result.getBody());
+            System.out.println(jsonObject);
+            JSONArray jsonArray=(JSONArray)jsonObject.get("documents");
+            System.out.println("-------");
+            System.out.println(jsonArray);
+            List<UserAddress> userAddresses=new ArrayList<>(jsonArray.size());
+
+            for(int i=0;i<jsonArray.size();i++){
+                UserAddress userAddress=new UserAddress();
+
+                JSONObject local=(JSONObject)jsonArray.get(i);
+                searchResult.add((String)local.get("address_name"));
+                JSONObject address=(JSONObject)local.get("address");
+
+                userAddress.setListId(i);
+                userAddress.setResion1((String)address.get("region_1depth_name"));
+                userAddress.setResion2((String)address.get("region_2depth_name"));
+                userAddress.setResion3((String)address.get("region_3depth_name"));
+                userAddress.setResion3_h((String)address.get("region_3depth_h_name"));
+
+                userAddresses.add(userAddress);
+            }
+            userAddressList.setUserid(1);//임시
+            userAddressList.setUserAddress(userAddresses);
+            userAddressList.setAddressList(searchResult);
+            return userAddressList;
+
+
+
+        } catch (Exception e) {
+            System.out.println(e);
+            return userAddressList;
+        }
+
+    }
     public String getAddress(String lati, String longi){
         try{
             final String APPKEY="9adca47b25d38d5f1826188403e6caca";

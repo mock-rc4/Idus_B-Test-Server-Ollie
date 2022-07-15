@@ -18,7 +18,7 @@ import static com.example.demo.config.BaseResponseStatus.*;
 
 @RestController
 @RequestMapping("/app/onlines")
-public class OnclassController {
+public class  OnclassController {
     final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
