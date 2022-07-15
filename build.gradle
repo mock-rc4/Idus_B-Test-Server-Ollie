@@ -53,10 +53,18 @@ dependencies {
     implementation('org.springframework.boot:spring-boot-starter')
     compile('org.springframework.boot:spring-boot-starter-web')
 
+    //json-simple
     implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
 
+    //푸시알림
+    implementation 'com.google.firebase:firebase-admin:6.8.1'
+    implementation group: 'com.squareup.okhttp3', name:'okhttp',version:'4.2.2'
 
+    //s3이미지지
+   implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 
+//    //jpa
+//    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 }
 
 test {
