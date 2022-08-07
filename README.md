@@ -1,4 +1,7 @@
-# Idus_B-Test-Server-Ollie
+api명세서 링크
+https://docs.google.com/spreadsheets/d/1tHDdcIBoIRphjRwL4aNMx_cqag7Ekw1C_p_jPg0u_ZQ/edit#gid=881357416
+
+개발일지
 
 ## 1주차 해야할일
   - EC2 인스턴스 구축
