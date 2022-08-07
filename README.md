@@ -1,12 +1,19 @@
 
 ## 📢 프로젝트 소개
-아이디어스 팀 프로젝트입니다. 
-기간: 3/19 ~ 4/1
-참여 인원 : 프론트엔드 1, 백엔드 1
 
+아이디어스 팀 프로젝트입니다.   
+기간: 3/19 ~ 4/1   
+참여 인원 : 프론트엔드 1, 백엔드 1   
 
-## api명세서 링크
-https://docs.google.com/spreadsheets/d/1tHDdcIBoIRphjRwL4aNMx_cqag7Ekw1C_p_jPg0u_ZQ/edit#gid=881357416
+## 🛠 기술스택
+
+ - SpringBoot
+ - AWS
+    - EC2 Linux instance
+    - RDS Database - MySQL
+ - Kakao 소셜로그인
+ - Swift
+
 
 
 ##개발일지
