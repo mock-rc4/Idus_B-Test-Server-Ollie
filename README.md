@@ -14,9 +14,19 @@
  - Kakao 소셜로그인
  - Swift
 
+## erd
+
+URL : https://aquerytool.com/aquerymain/index/?rurl=d895bb08-2c37-48c1-9ff3-8aaadc0872fa&
+Password : 3xs6i1
 
 
-##개발일지
+## api명세서
+
+https://docs.google.com/spreadsheets/d/1tHDdcIBoIRphjRwL4aNMx_cqag7Ekw1C_p_jPg0u_ZQ/edit?usp=sharing
+
+
+
+## 개발일지
 
 
 ### 2022 - 03 -19 진행상황
@@ -47,12 +57,6 @@
   - 특정 유저 프로필 수정 API수현
   - 작품 New탭 게시글 전체 조회 API구현 
   - 서버에 반영
-
-erd
-URL : https://aquerytool.com/aquerymain/index/?rurl=d895bb08-2c37-48c1-9ff3-8aaadc0872fa&
-Password : 3xs6i1
-
-api명세서:https://docs.google.com/spreadsheets/d/1tHDdcIBoIRphjRwL4aNMx_cqag7Ekw1C_p_jPg0u_ZQ/edit?usp=sharing
 
 ### 2022 -03 -23 진행상황
   - 작품 게시글 상세 페이지 API구현
