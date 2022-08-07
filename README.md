@@ -14,15 +14,15 @@
  - Kakao 소셜로그인
  - Swift
 
-## erd
+## 📖 erd
 
-URL : https://aquerytool.com/aquerymain/index/?rurl=d895bb08-2c37-48c1-9ff3-8aaadc0872fa&
-Password : 3xs6i1
+URL : https://aquerytool.com/aquerymain/index/?rurl=d895bb08-2c37-48c1-9ff3-8aaadc0872fa&   
+Password : 3xs6i1   
 
 
-## api명세서
+## 📝 api명세서
 
-https://docs.google.com/spreadsheets/d/1tHDdcIBoIRphjRwL4aNMx_cqag7Ekw1C_p_jPg0u_ZQ/edit?usp=sharing
+https://docs.google.com/spreadsheets/d/1tHDdcIBoIRphjRwL4aNMx_cqag7Ekw1C_p_jPg0u_ZQ/edit?usp=sharing   
 
 
 
