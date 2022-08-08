@@ -1,13 +1,38 @@
-# Idus_B-Test-Server-Ollie
 
-## 1주차 해야할일
-  - EC2 인스턴스 구축
-  - rds데이터베이스 구축
-  - erd설계
-  - dev/prod서버 구축
-  - ssl구축
-  - api명세서 설계
-  - 회원가입/로그인 api개발 -new api 개발
+## 📢 프로젝트 소개
+
+ - 아이디어스 팀 프로젝트입니다.   
+ - 기간: 3/19 ~ 4/1   
+ - 참여 인원 : 프론트엔드 1, 백엔드 1   
+
+
+
+## 🛠 기술스택
+
+ - SpringBoot
+ - AWS
+    - EC2 Linux instance
+    - RDS Database - MySQL
+ - Kakao 소셜로그인
+ - Swift
+
+
+
+## 📖 erd
+
+URL : https://aquerytool.com/aquerymain/index/?rurl=d895bb08-2c37-48c1-9ff3-8aaadc0872fa&   
+Password : 3xs6i1   
+
+
+
+## 📝 api명세서
+
+https://docs.google.com/spreadsheets/d/1tHDdcIBoIRphjRwL4aNMx_cqag7Ekw1C_p_jPg0u_ZQ/edit?usp=sharing   
+
+
+
+## 개발일지
+
 
 ### 2022 - 03 -19 진행상황
   - ec2인스턴스 구축
@@ -37,12 +62,6 @@
   - 특정 유저 프로필 수정 API수현
   - 작품 New탭 게시글 전체 조회 API구현 
   - 서버에 반영
-
-erd
-URL : https://aquerytool.com/aquerymain/index/?rurl=d895bb08-2c37-48c1-9ff3-8aaadc0872fa&
-Password : 3xs6i1
-
-api명세서:https://docs.google.com/spreadsheets/d/1tHDdcIBoIRphjRwL4aNMx_cqag7Ekw1C_p_jPg0u_ZQ/edit?usp=sharing
 
 ### 2022 -03 -23 진행상황
   - 작품 게시글 상세 페이지 API구현
